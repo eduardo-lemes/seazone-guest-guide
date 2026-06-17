@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  code             String  @id
+  name             String
+  propertyType     String
+  bedroomQuantity  Int
+  bathroomQuantity Int
+  guestCapacity    Int
+  address          Json
+  operational      Json
+  rules            Json
+  amenities        Json
+  images           String[]
+  hostName         String
+  hostPhone        String
+
+  experienceGuide ExperienceGuide?
+}
+
+model ExperienceGuide {
+  id           String   @id @default(cuid())
+  propertyCode String   @unique
+  property     Property @relation(fields: [propertyCode], references: [code])
+  content      Json
+  generatedAt  DateTime @default(now())
+}
