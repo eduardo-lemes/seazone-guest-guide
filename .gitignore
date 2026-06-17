@@ -41,4 +41,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# claude code
+CLAUDE.md
+AGENTS.md
+PLANNING.md
+
 /src/generated/prisma
