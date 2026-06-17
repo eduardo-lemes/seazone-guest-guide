@@ -16,7 +16,6 @@ export default defineConfig({
     environment: "node",
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
-    environmentMatchGlobs: [["src/components/**", "jsdom"]],
     coverage: {
       provider: "v8",
       reporter: ["text", "lcov"],
