@@ -49,7 +49,7 @@ export function WelcomeBanner({ propertyName, propertyCode, city }: Props) {
               <span className="text-[#F07060]">{propertyName}</span>
             </p>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
-              Este guia reúne tudo que você precisa para a sua estadia — acesso,
+              Este guia reúne tudo que você precisa para a sua estadia - acesso,
               regras e comodidades do imóvel, recomendações personalizadas da
               região e um assistente virtual disponível para qualquer dúvida.
             </p>
@@ -69,13 +69,15 @@ export function WelcomeBanner({ propertyName, propertyCode, city }: Props) {
         </div>
 
         {/* Dica da temporada */}
-        <div className="flex flex-1 flex-col justify-between border-t border-slate-100 bg-amber-50/60 p-6 md:border-l md:border-t-0">
+        <div className="flex flex-1 flex-col justify-between border-t border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50/70 p-6 md:border-l-[3px] md:border-t-0 md:border-amber-300">
           <div>
             {/* Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sun size={14} className="text-amber-500" />
-                <p className="text-xs font-semibold uppercase tracking-widest text-amber-600">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-200/70">
+                  <Sun size={13} className="text-amber-600" />
+                </span>
+                <p className="text-xs font-semibold uppercase tracking-widest text-amber-700">
                   Dica da Temporada
                 </p>
               </div>

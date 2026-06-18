@@ -44,13 +44,15 @@ export function ExperienceGuide({ content }: ExperienceGuideProps) {
   return (
     <div className="space-y-8">
       {/* Mensagem da Seazone */}
-      <div className="rounded-2xl border border-[#1a2a4a]/10 bg-[#1a2a4a] px-6 py-5 text-white shadow-sm">
+      <div className="rounded-2xl border border-[#1a2a4a]/10 bg-gradient-to-br from-[#1a2a4a] to-[#1e3560] px-6 py-5 text-white shadow-sm border-l-[3px] border-l-[#F07060]">
         <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/60">
             Mensagem da Seazone
           </p>
           <span className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] font-medium text-white/60">
-            <Sparkles size={9} />
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-white/10">
+              <Sparkles size={8} />
+            </span>
             Gerado por IA
           </span>
         </div>
