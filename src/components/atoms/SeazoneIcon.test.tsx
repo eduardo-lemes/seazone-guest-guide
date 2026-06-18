@@ -1,21 +1,27 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { SeazoneIcon } from "./SeazoneIcon";
 
 describe("SeazoneIcon", () => {
-  it("renders an svg element", () => {
-    const { container } = render(<SeazoneIcon />);
-    expect(container.querySelector("svg")).toBeInTheDocument();
+  it("renders an img element with seazone logo", () => {
+    render(<SeazoneIcon />);
+    expect(screen.getByRole("img", { name: /seazone/i })).toBeInTheDocument();
   });
 
   it("applies custom size", () => {
-    const { container } = render(<SeazoneIcon size={32} />);
-    const svg = container.querySelector("svg");
-    expect(svg).toHaveAttribute("width", "32");
-    expect(svg).toHaveAttribute("height", "32");
+    render(<SeazoneIcon size={32} />);
+    const img = screen.getByRole("img", { name: /seazone/i });
+    expect(img).toHaveAttribute("width", "32");
+    expect(img).toHaveAttribute("height", "32");
   });
 
   it("applies custom className", () => {
-    const { container } = render(<SeazoneIcon className="text-red-500" />);
-    expect(container.querySelector("svg")).toHaveClass("text-red-500");
+    render(<SeazoneIcon className="custom-class" />);
+    expect(screen.getByRole("img", { name: /seazone/i })).toHaveClass("custom-class");
+  });
+
+  it("applies white filter when white prop is true", () => {
+    const { container } = render(<SeazoneIcon white />);
+    const img = container.querySelector("img");
+    expect(img).toHaveStyle({ filter: "brightness(0) invert(1)" });
   });
 });

@@ -466,7 +466,7 @@ function MessageBubble({
 function BotAvatar() {
   return (
     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F07060]">
-      <SeazoneIcon size={14} className="text-white" />
+      <SeazoneIcon size={14} white />
     </div>
   );
 }
@@ -597,7 +597,7 @@ export function ChatPanel({ propertyCode }: ChatPanelProps) {
         aria-label={open ? "Fechar chat" : "Abrir chat"}
         className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#F07060] text-white shadow-xl transition-all hover:scale-105 hover:bg-[#e8614f] active:scale-95"
       >
-        {open ? <X size={22} /> : <SeazoneIcon size={26} className="text-white" />}
+        {open ? <X size={22} /> : <SeazoneIcon size={26} white />}
       </button>
 
       {open && (
@@ -605,7 +605,7 @@ export function ChatPanel({ propertyCode }: ChatPanelProps) {
           {/* Header */}
           <div className="flex items-center gap-3 bg-[#F07060] px-4 py-3.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20">
-              <SeazoneIcon size={20} className="text-white" />
+              <SeazoneIcon size={20} white />
             </div>
             <div className="flex-1">
               <p className="font-semibold leading-none text-white">Assistente Seazone</p>
