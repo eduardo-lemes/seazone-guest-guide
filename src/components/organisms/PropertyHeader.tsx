@@ -5,7 +5,7 @@ import type { Property } from "@/types/property";
 type Props = { property: Property };
 
 export function PropertyHeader({ property }: Props) {
-  const { address, rules, operational } = property;
+  const { address, rules } = property;
 
   return (
     <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
@@ -22,7 +22,6 @@ export function PropertyHeader({ property }: Props) {
         </div>
 
         <div className="flex flex-1 flex-col gap-4 p-7">
-          {/* Identidade */}
           <div>
             <span className="inline-block rounded-full border border-[#F07060]/25 bg-[#F07060]/8 px-3 py-0.5 text-xs font-semibold text-[#F07060]">
               {property.propertyType}
@@ -38,7 +37,6 @@ export function PropertyHeader({ property }: Props) {
 
           <div className="h-px bg-slate-100" />
 
-          {/* Check-in/out + Wi-Fi */}
           <div className="space-y-2.5">
             <div className="grid grid-cols-2 gap-2.5">
               <div className="rounded-xl bg-slate-50 px-4 py-3">
@@ -61,17 +59,14 @@ export function PropertyHeader({ property }: Props) {
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 rounded-xl bg-slate-50 px-4 py-3">
-              <Wifi size={14} className="shrink-0 text-[#F07060]" />
-              <span className="text-sm text-slate-600">{operational.wifiNetwork}</span>
-              <span className="text-slate-300">·</span>
-              <code className="font-mono text-sm text-slate-700">{operational.wifiPassword}</code>
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5">
+              <Wifi size={12} className="text-emerald-600" />
+              <span className="text-xs font-medium text-emerald-700">Wi-Fi disponível</span>
             </div>
           </div>
 
           <div className="h-px bg-slate-100" />
 
-          {/* Capacidade */}
           <div className="flex flex-wrap gap-2.5">
             {[
               { icon: <BedDouble size={14} />, label: `${property.bedroomQuantity} quarto${property.bedroomQuantity > 1 ? "s" : ""}` },

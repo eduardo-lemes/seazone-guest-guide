@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { Home, Sparkles, Map } from "lucide-react";
 import type { Property } from "@/types/property";
 
 const MapView = dynamic(() => import("@/components/organisms/MapView"), {
@@ -20,10 +21,10 @@ type Props = {
   experienceGuide: React.ReactNode;
 };
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: "sobre", label: "Sobre o Imóvel" },
-  { id: "experiencias", label: "Experiências" },
-  { id: "mapa", label: "Mapa" },
+const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
+  { id: "sobre", label: "Sobre o Imóvel", icon: <Home size={14} /> },
+  { id: "experiencias", label: "Experiências", icon: <Sparkles size={14} /> },
+  { id: "mapa", label: "Mapa", icon: <Map size={14} /> },
 ];
 
 export function TabbedContent({
@@ -46,16 +47,17 @@ export function TabbedContent({
     <div>
       <nav className="sticky top-14 z-40 border-b border-slate-200 bg-white">
         <div className="flex overflow-x-auto">
-          {TABS.map(({ id, label }) => (
+          {TABS.map(({ id, label, icon }) => (
             <button
               key={id}
               onClick={() => handleTabClick(id)}
-              className={`relative whitespace-nowrap px-6 py-4 text-sm font-medium transition-colors ${
+              className={`relative flex items-center gap-2 whitespace-nowrap px-6 py-4 text-sm font-medium transition-colors ${
                 active === id
                   ? "text-[#F07060]"
                   : "text-slate-500 hover:text-slate-700"
               }`}
             >
+              <span className="opacity-70">{icon}</span>
               {label}
               {active === id && (
                 <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F07060]" />
