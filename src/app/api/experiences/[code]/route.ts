@@ -1,6 +1,6 @@
 import { getProperty } from "@/lib/db/queries/properties";
 import { GenerateExperienceGuide } from "@/application/use-cases/GenerateExperienceGuide";
-import { ClaudeExperienceGuideGenerator } from "@/infrastructure/ai/ClaudeExperienceGuideGenerator";
+import { VercelAIExperienceGuideGenerator } from "@/infrastructure/ai/VercelAIExperienceGuideGenerator";
 import { PrismaExperienceGuideRepository } from "@/infrastructure/db/PrismaExperienceGuideRepository";
 
 export async function POST(
@@ -17,11 +17,12 @@ export async function POST(
   try {
     const useCase = new GenerateExperienceGuide(
       new PrismaExperienceGuideRepository(),
-      new ClaudeExperienceGuideGenerator()
+      new VercelAIExperienceGuideGenerator()
     );
     const content = await useCase.execute(property);
     return Response.json(content);
-  } catch {
+  } catch (error) {
+    console.error("[experiences] generation failed:", error);
     return Response.json({ error: "Failed to generate experience guide" }, { status: 500 });
   }
 }
