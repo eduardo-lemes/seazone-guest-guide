@@ -21,10 +21,10 @@ function MessageBubble({ message }: { message: UIMessage }) {
   return (
     <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
+        className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
           message.role === "user"
             ? "bg-emerald-600 text-white"
-            : "border border-slate-200 bg-white text-slate-800"
+            : "border border-slate-200 bg-white text-slate-800 shadow-sm"
         }`}
       >
         {text}
@@ -36,7 +36,7 @@ function MessageBubble({ message }: { message: UIMessage }) {
 function TypingIndicator() {
   return (
     <div className="flex justify-start">
-      <div className="flex gap-1 rounded-2xl border border-slate-200 bg-white px-4 py-3">
+      <div className="flex gap-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
         <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400" />
         <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:0.15s]" />
         <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:0.3s]" />
@@ -69,21 +69,23 @@ export function ChatPanel({ propertyCode }: ChatPanelProps) {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Fechar chat" : "Abrir chat"}
-        className="fixed bottom-6 right-6 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 shadow-lg text-white"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xl transition-all hover:scale-105 hover:bg-emerald-700 active:scale-95"
       >
         {open ? <X size={22} /> : <MessageCircle size={22} />}
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col rounded-2xl border border-slate-200 bg-white shadow-xl sm:right-6">
-          <div className="rounded-t-2xl bg-emerald-600 px-4 py-3">
-            <p className="font-semibold text-white">Assistente</p>
+        <div className="fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl sm:right-6">
+          <div className="bg-emerald-600 px-4 py-3.5">
+            <p className="font-semibold text-white">Assistente Seazone</p>
             <p className="text-xs text-emerald-100">Tire suas dúvidas sobre o imóvel</p>
           </div>
 
           <div className="flex h-72 flex-col gap-3 overflow-y-auto p-4">
             {messages.length === 0 && (
-              <p className="text-center text-xs text-slate-400">Olá! Como posso te ajudar?</p>
+              <p className="text-center text-xs text-slate-400">
+                Olá! Como posso te ajudar?
+              </p>
             )}
             {messages.map((m) => (
               <MessageBubble key={m.id} message={m} />
@@ -91,19 +93,19 @@ export function ChatPanel({ propertyCode }: ChatPanelProps) {
             {isLoading && <TypingIndicator />}
           </div>
 
-          <form onSubmit={handleSubmit} className="flex gap-2 border-t border-slate-200 p-3">
+          <form onSubmit={handleSubmit} className="flex gap-2 border-t border-slate-100 p-3">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Digite sua mensagem..."
               disabled={isLoading}
-              className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-emerald-400"
+              className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition-colors focus:border-emerald-400 focus:bg-white disabled:opacity-60"
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
               aria-label="Enviar"
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white disabled:opacity-50"
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white transition-colors hover:bg-emerald-700 disabled:opacity-40"
             >
               <Send size={16} />
             </button>

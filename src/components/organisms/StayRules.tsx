@@ -7,9 +7,9 @@ type StayRulesProps = {
 
 function TimeRow({ label, time }: { label: string; time: string }) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
       <div className="flex items-center gap-2 text-sm text-slate-600">
-        <Clock size={14} className="text-slate-400" />
+        <Clock size={14} className="text-emerald-500" />
         {label}
       </div>
       <span className="text-sm font-semibold text-slate-900">{time}</span>
@@ -49,7 +49,7 @@ export function StayRules({ rules }: StayRulesProps) {
         <TimeRow label="Check-out até" time={rules.checkOutTime} />
       </div>
 
-      <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white px-4">
+      <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white px-4 shadow-sm">
         <PolicyRow icon={<PawPrint size={15} />} label="Animais de estimação" allowed={rules.allowPet} />
         <PolicyRow icon={<Cigarette size={15} />} label="Fumar" allowed={rules.smokingPermitted} />
         <PolicyRow icon={<Baby size={15} />} label="Crianças" allowed={rules.suitableForChildren} />

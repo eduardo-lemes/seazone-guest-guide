@@ -1,3 +1,5 @@
+import { TopNav } from "@/components/organisms/TopNav";
+
 type SectionProps = {
   title: string;
   children: React.ReactNode;
@@ -6,7 +8,9 @@ type SectionProps = {
 function Section({ title, children }: SectionProps) {
   return (
     <section>
-      <h2 className="mb-3 text-lg font-semibold text-slate-900">{title}</h2>
+      <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
+        {title}
+      </p>
       {children}
     </section>
   );
@@ -30,21 +34,30 @@ export function GuideLayout({
   chatPanel,
 }: GuideLayoutProps) {
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6 pb-28">
-      <div className="space-y-8">
-        {header}
+    <>
+      <TopNav />
+      <div className="mx-auto max-w-2xl px-4 pb-28 pt-6">
+        <div className="space-y-8">
+          {header}
 
-        <Section title="Informações de Acesso">{accessInfo}</Section>
-        <Section title="Regras da Estadia">{stayRules}</Section>
+          <div className="h-px bg-slate-200" />
 
-        {experienceGuide && (
-          <Section title="Guia de Experiências">{experienceGuide}</Section>
-        )}
+          <Section title="Informações de Acesso">{accessInfo}</Section>
+          <Section title="Regras da Estadia">{stayRules}</Section>
 
-        <Section title="Contato">{contact}</Section>
+          {experienceGuide && (
+            <>
+              <div className="h-px bg-slate-200" />
+              <Section title="Guia de Experiências">{experienceGuide}</Section>
+            </>
+          )}
+
+          <div className="h-px bg-slate-200" />
+          <Section title="Contato">{contact}</Section>
+        </div>
+
+        {chatPanel}
       </div>
-
-      {chatPanel}
-    </div>
+    </>
   );
 }

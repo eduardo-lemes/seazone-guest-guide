@@ -13,45 +13,50 @@ export function PropertyHeader({ property }: PropertyHeaderProps) {
 
   return (
     <div>
-      <div className="relative h-64 w-full overflow-hidden rounded-xl sm:h-80">
+      <div className="relative -mx-4 h-[260px] overflow-hidden sm:mx-0 sm:h-[400px] sm:rounded-2xl">
         <Image
           src={property.images[0]}
           alt={property.name}
           fill
+          sizes="(max-width: 672px) 100vw, 672px"
           className="object-cover"
           priority
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          <div className="flex items-end justify-between gap-3">
+            <h1 className="text-xl font-bold text-white drop-shadow sm:text-2xl">
+              {property.name}
+            </h1>
+            <Badge label={property.propertyType} variant="default" />
+          </div>
+          <p className="mt-1 flex items-center gap-1 text-sm text-white/80">
+            <MapPin size={13} />
+            {address.neighborhood}, {address.city} — {address.state}
+          </p>
+        </div>
       </div>
 
-      <div className="mt-4">
-        <div className="flex flex-wrap items-start justify-between gap-2">
-          <h1 className="text-2xl font-bold text-slate-900">{property.name}</h1>
-          <Badge label={property.propertyType} />
-        </div>
-
-        <p className="mt-1 flex items-center gap-1 text-sm text-slate-500">
-          <MapPin size={14} />
-          {address.neighborhood}, {address.city} — {address.state}
-        </p>
-
-        <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-700">
-          <span className="flex items-center gap-1.5">
-            <BedDouble size={16} className="text-slate-400" />
-            {property.bedroomQuantity} quarto{property.bedroomQuantity > 1 ? "s" : ""}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Bath size={16} className="text-slate-400" />
-            {property.bathroomQuantity} banheiro{property.bathroomQuantity > 1 ? "s" : ""}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Users size={16} className="text-slate-400" />
-            Até {property.guestCapacity} hóspedes
-          </span>
-        </div>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {[
+          { icon: <BedDouble size={14} />, label: `${property.bedroomQuantity} quarto${property.bedroomQuantity > 1 ? "s" : ""}` },
+          { icon: <Bath size={14} />, label: `${property.bathroomQuantity} banheiro${property.bathroomQuantity > 1 ? "s" : ""}` },
+          { icon: <Users size={14} />, label: `Até ${property.guestCapacity} hóspedes` },
+        ].map(({ icon, label }) => (
+          <div
+            key={label}
+            className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm"
+          >
+            <span className="text-slate-400">{icon}</span>
+            {label}
+          </div>
+        ))}
       </div>
 
       <div className="mt-6">
-        <h2 className="mb-3 text-base font-semibold text-slate-900">Amenidades</h2>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">
+          Amenidades
+        </p>
         <AmenityList amenities={property.amenities} />
       </div>
     </div>

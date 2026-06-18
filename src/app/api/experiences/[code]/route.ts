@@ -21,8 +21,7 @@ export async function POST(
     );
     const content = await useCase.execute(property);
     return Response.json(content);
-  } catch (error) {
-    console.error("[experiences] generation failed:", error);
+  } catch {
     return Response.json({ error: "Failed to generate experience guide" }, { status: 500 });
   }
 }

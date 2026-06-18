@@ -44,13 +44,13 @@ describe("ChatPanel", () => {
 
   it("does not show chat window initially", () => {
     render(<ChatPanel propertyCode="FLN001" />);
-    expect(screen.queryByText("Assistente")).not.toBeInTheDocument();
+    expect(screen.queryByText("Assistente Seazone")).not.toBeInTheDocument();
   });
 
   it("opens chat window when toggle button is clicked", () => {
     render(<ChatPanel propertyCode="FLN001" />);
     fireEvent.click(screen.getByRole("button", { name: /abrir chat/i }));
-    expect(screen.getByText("Assistente")).toBeInTheDocument();
+    expect(screen.getByText("Assistente Seazone")).toBeInTheDocument();
   });
 
   it("shows empty state message when no messages exist", () => {
@@ -70,7 +70,7 @@ describe("ChatPanel", () => {
     render(<ChatPanel propertyCode="FLN001" />);
     fireEvent.click(screen.getByRole("button", { name: /abrir chat/i }));
     fireEvent.click(screen.getByRole("button", { name: /fechar chat/i }));
-    expect(screen.queryByText("Assistente")).not.toBeInTheDocument();
+    expect(screen.queryByText("Assistente Seazone")).not.toBeInTheDocument();
   });
 
   it("renders user and assistant message bubbles when messages exist", () => {
