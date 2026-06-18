@@ -45,7 +45,7 @@ export function PropertyHeader({ property }: Props) {
           <div className="space-y-2.5">
             <div className="grid grid-cols-2 gap-2.5">
               <div className="rounded-xl bg-slate-50 px-4 py-3">
-                <p className="flex items-center gap-1.5 text-xs text-slate-400">
+                <p className="flex items-center gap-1.5 text-xs text-slate-500">
                   <Clock size={11} />
                   Check-in
                 </p>
@@ -54,7 +54,7 @@ export function PropertyHeader({ property }: Props) {
                 </p>
               </div>
               <div className="rounded-xl bg-slate-50 px-4 py-3">
-                <p className="flex items-center gap-1.5 text-xs text-slate-400">
+                <p className="flex items-center gap-1.5 text-xs text-slate-500">
                   <Clock size={11} />
                   Check-out
                 </p>
