@@ -56,7 +56,7 @@ describe("ChatPanel", () => {
   it("shows empty state message when no messages exist", () => {
     render(<ChatPanel propertyCode="FLN001" />);
     fireEvent.click(screen.getByRole("button", { name: /abrir chat/i }));
-    expect(screen.getByText(/como posso te ajudar/i)).toBeInTheDocument();
+    expect(screen.getByText(/tire dúvidas sobre o imóvel/i)).toBeInTheDocument();
   });
 
   it("renders input and send button when open", () => {

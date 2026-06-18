@@ -1,4 +1,4 @@
-import { Clock, PawPrint, Cigarette, Baby, PartyPopper, Check, X } from "lucide-react";
+import { Clock, PawPrint, Cigarette, Baby, PartyPopper } from "lucide-react";
 import type { Rules } from "@/types/property";
 
 type StayRulesProps = {
@@ -12,7 +12,9 @@ function TimeRow({ label, time }: { label: string; time: string }) {
         <Clock size={14} className="text-[#F07060]" />
         {label}
       </div>
-      <span className="text-sm font-semibold text-slate-900">{time}</span>
+      <span className="rounded-full bg-[#F07060]/10 px-3 py-0.5 text-sm font-bold text-[#F07060]">
+        {time}
+      </span>
     </div>
   );
 }
@@ -27,15 +29,19 @@ function PolicyRow({
   allowed: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between py-2.5">
-      <div className="flex items-center gap-2 text-sm text-slate-700">
+    <div className="flex items-center justify-between py-3">
+      <div className="flex items-center gap-2.5 text-sm text-slate-700">
         {icon}
         {label}
       </div>
       {allowed ? (
-        <Check size={16} className="text-emerald-500" />
+        <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">
+          Permitido
+        </span>
       ) : (
-        <X size={16} className="text-red-400" />
+        <span className="rounded-full border border-red-200 bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-600">
+          Não permitido
+        </span>
       )}
     </div>
   );
