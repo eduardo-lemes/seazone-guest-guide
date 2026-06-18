@@ -28,7 +28,7 @@ export function GuideLayout({
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-8">
         <PropertyHeader property={property} />
         <div className="mt-4">
-          <WelcomeBanner propertyName={property.name} />
+          <WelcomeBanner propertyName={property.name} propertyCode={property.code} />
         </div>
         <div className="mt-6">
           <TabbedContent

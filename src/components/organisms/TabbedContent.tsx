@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Home, Sparkles, Map } from "lucide-react";
 import type { Property } from "@/types/property";
@@ -42,6 +42,16 @@ export function TabbedContent({
     if (id === "mapa") setMapaVisited(true);
     setActive(id);
   }
+
+  useEffect(() => {
+    function onSwitchTab(e: Event) {
+      const id = (e as CustomEvent<Tab>).detail;
+      handleTabClick(id);
+    }
+    window.addEventListener("switch-tab", onSwitchTab);
+    return () => window.removeEventListener("switch-tab", onSwitchTab);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
