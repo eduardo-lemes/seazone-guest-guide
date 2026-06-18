@@ -54,14 +54,14 @@ export default function MapView({ property }: Props) {
   }, [property.address]);
 
   if (!ready) {
-    return <div className="h-[420px] animate-pulse rounded-2xl bg-slate-100" />;
+    return <div className="h-[560px] animate-pulse rounded-2xl bg-slate-100" />;
   }
 
   const propertyIcon = makeDivIcon("🏠", "#F07060");
 
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-      <MapContainer center={center} zoom={15} style={{ height: "420px" }} scrollWheelZoom={false}>
+      <MapContainer center={center} zoom={15} style={{ height: "560px" }} scrollWheelZoom={false}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

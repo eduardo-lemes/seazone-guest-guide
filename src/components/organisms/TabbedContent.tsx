@@ -6,7 +6,7 @@ import type { Property } from "@/types/property";
 
 const MapView = dynamic(() => import("@/components/organisms/MapView"), {
   ssr: false,
-  loading: () => <div className="h-[440px] animate-pulse rounded-2xl bg-slate-100" />,
+  loading: () => <div className="h-[560px] animate-pulse rounded-2xl bg-slate-100" />,
 });
 
 type Tab = "sobre" | "experiencias" | "mapa";
@@ -44,7 +44,7 @@ export function TabbedContent({
             <button
               key={id}
               onClick={() => setActive(id)}
-              className={`relative whitespace-nowrap px-5 py-3.5 text-sm font-medium transition-colors ${
+              className={`relative whitespace-nowrap px-6 py-4 text-sm font-medium transition-colors ${
                 active === id
                   ? "text-[#F07060]"
                   : "text-slate-500 hover:text-slate-700"
@@ -59,11 +59,11 @@ export function TabbedContent({
         </div>
       </nav>
 
-      <div className="py-6">
+      <div className="py-8">
         {active === "sobre" && (
-          <div className="space-y-6">
+          <div className="space-y-10">
             <section>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
+              <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-slate-400">
                 Amenidades
               </p>
               {amenities}
@@ -71,20 +71,20 @@ export function TabbedContent({
 
             <div className="h-px bg-slate-200" />
 
-            <div className="grid gap-6 lg:grid-cols-3">
-              <section className="space-y-3">
+            <div className="grid gap-8 lg:grid-cols-3">
+              <section className="space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
                   Acesso
                 </p>
                 {accessInfo}
               </section>
-              <section className="space-y-3">
+              <section className="space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
                   Regras
                 </p>
                 {stayRules}
               </section>
-              <section className="space-y-3">
+              <section className="space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
                   Contato
                 </p>
