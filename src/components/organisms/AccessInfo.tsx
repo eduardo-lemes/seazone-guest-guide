@@ -17,7 +17,7 @@ function InfoCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`rounded-xl border bg-white p-4 shadow-sm border-l-4 ${accent}`}>
+    <div className={`rounded-xl border bg-white p-4 shadow-sm transition-shadow hover:shadow-md border-l-4 ${accent}`}>
       <div className="mb-2 flex items-center gap-2 text-slate-700">
         {icon}
         <h3 className="font-semibold">{title}</h3>
@@ -30,7 +30,7 @@ function InfoCard({
 export function AccessInfo({ operational }: AccessInfoProps) {
   return (
     <div className="space-y-3">
-      <InfoCard icon={<Wifi size={16} />} title="Wi-Fi" accent="border-l-blue-400">
+      <InfoCard icon={<Wifi size={16} className="text-[#F07060]" />} title="Wi-Fi" accent="border-l-[#F07060]">
         <p className="text-sm text-slate-600">
           Rede: <span className="font-medium text-slate-800">{operational.wifiNetwork}</span>
         </p>
@@ -39,7 +39,7 @@ export function AccessInfo({ operational }: AccessInfoProps) {
         </p>
       </InfoCard>
 
-      <InfoCard icon={<Lock size={16} />} title="Acesso ao imóvel" accent="border-l-orange-400">
+      <InfoCard icon={<Lock size={16} className="text-[#1a2a4a]" />} title="Acesso ao imóvel" accent="border-l-[#1a2a4a]">
         <p className="text-sm text-slate-600">{operational.propertyAccessInstructions}</p>
         {operational.propertyPassword && (
           <p className="mt-1 text-sm text-slate-600">
@@ -49,7 +49,7 @@ export function AccessInfo({ operational }: AccessInfoProps) {
       </InfoCard>
 
       {operational.hasParkingSpot && (
-        <InfoCard icon={<Car size={16} />} title="Estacionamento" accent="border-l-emerald-400">
+        <InfoCard icon={<Car size={16} className="text-emerald-500" />} title="Estacionamento" accent="border-l-emerald-400">
           {operational.parkingSpotIdentifier && (
             <p className="text-sm font-medium text-slate-800">{operational.parkingSpotIdentifier}</p>
           )}

@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Send, X, MessageCircle } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import { SeazoneIcon } from "@/components/atoms/SeazoneIcon";
 import type { UIMessage, TextUIPart } from "ai";
 
 type ChatPanelProps = {
@@ -23,7 +24,7 @@ function MessageBubble({ message }: { message: UIMessage }) {
       <div
         className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
           message.role === "user"
-            ? "bg-emerald-600 text-white"
+            ? "bg-[#F07060] text-white"
             : "border border-slate-200 bg-white text-slate-800 shadow-sm"
         }`}
       >
@@ -69,16 +70,19 @@ export function ChatPanel({ propertyCode }: ChatPanelProps) {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Fechar chat" : "Abrir chat"}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xl transition-all hover:scale-105 hover:bg-emerald-700 active:scale-95"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#F07060] text-white shadow-xl transition-all hover:scale-105 hover:bg-[#e8614f] active:scale-95"
       >
-        {open ? <X size={22} /> : <MessageCircle size={22} />}
+        {open ? <X size={22} /> : <SeazoneIcon size={26} className="text-white" />}
       </button>
 
       {open && (
         <div className="fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl sm:right-6">
-          <div className="bg-emerald-600 px-4 py-3.5">
-            <p className="font-semibold text-white">Assistente Seazone</p>
-            <p className="text-xs text-emerald-100">Tire suas dúvidas sobre o imóvel</p>
+          <div className="flex items-center gap-2.5 bg-[#F07060] px-4 py-3.5">
+            <SeazoneIcon size={20} className="text-white opacity-90" />
+            <div>
+              <p className="font-semibold leading-none text-white">Assistente Seazone</p>
+              <p className="mt-0.5 text-xs text-white/80">Tire suas dúvidas sobre o imóvel</p>
+            </div>
           </div>
 
           <div className="flex h-72 flex-col gap-3 overflow-y-auto p-4">
@@ -99,13 +103,13 @@ export function ChatPanel({ propertyCode }: ChatPanelProps) {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Digite sua mensagem..."
               disabled={isLoading}
-              className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition-colors focus:border-emerald-400 focus:bg-white disabled:opacity-60"
+              className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none transition-colors focus:border-[#F07060] focus:bg-white disabled:opacity-60"
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
               aria-label="Enviar"
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white transition-colors hover:bg-emerald-700 disabled:opacity-40"
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#F07060] text-white transition-colors hover:bg-[#e8614f] disabled:opacity-40"
             >
               <Send size={16} />
             </button>

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { BedDouble, Bath, Users, MapPin } from "lucide-react";
-import { Badge } from "@/components/atoms/Badge";
 import { AmenityList } from "@/components/molecules/AmenityList";
 import type { Property } from "@/types/property";
 
@@ -13,7 +12,7 @@ export function PropertyHeader({ property }: PropertyHeaderProps) {
 
   return (
     <div>
-      <div className="relative -mx-4 h-[260px] overflow-hidden sm:mx-0 sm:h-[400px] sm:rounded-2xl">
+      <div className="relative -mx-4 h-[300px] overflow-hidden sm:mx-0 sm:h-[480px] sm:rounded-2xl">
         <Image
           src={property.images[0]}
           alt={property.name}
@@ -22,15 +21,17 @@ export function PropertyHeader({ property }: PropertyHeaderProps) {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-5">
           <div className="flex items-end justify-between gap-3">
-            <h1 className="text-xl font-bold text-white drop-shadow sm:text-2xl">
+            <h1 className="text-2xl font-bold text-white drop-shadow sm:text-3xl">
               {property.name}
             </h1>
-            <Badge label={property.propertyType} variant="default" />
+            <span className="shrink-0 rounded-full border border-white/30 bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+              {property.propertyType}
+            </span>
           </div>
-          <p className="mt-1 flex items-center gap-1 text-sm text-white/80">
+          <p className="mt-1.5 flex items-center gap-1 text-sm text-white/80">
             <MapPin size={13} />
             {address.neighborhood}, {address.city} — {address.state}
           </p>
@@ -47,7 +48,7 @@ export function PropertyHeader({ property }: PropertyHeaderProps) {
             key={label}
             className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm"
           >
-            <span className="text-slate-400">{icon}</span>
+            <span className="text-[#F07060]">{icon}</span>
             {label}
           </div>
         ))}

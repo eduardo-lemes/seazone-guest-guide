@@ -2,10 +2,14 @@ import { render, screen } from "@testing-library/react";
 import { TopNav } from "./TopNav";
 
 describe("TopNav", () => {
-  it("renders the brand name and subtitle", () => {
+  it("renders the Seazone logo", () => {
+    render(<TopNav />);
+    expect(screen.getByAltText("Seazone")).toBeInTheDocument();
+  });
+
+  it("renders the guide label", () => {
     render(<TopNav />);
     expect(screen.getByText("Guia do Hóspede")).toBeInTheDocument();
-    expect(screen.getByText("Seazone")).toBeInTheDocument();
   });
 
   it("renders as a header element", () => {
