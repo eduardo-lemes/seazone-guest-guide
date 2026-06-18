@@ -1,0 +1,27 @@
+import { getProperty } from "@/lib/db/queries/properties";
+import { GenerateExperienceGuide } from "@/application/use-cases/GenerateExperienceGuide";
+import { ClaudeExperienceGuideGenerator } from "@/infrastructure/ai/ClaudeExperienceGuideGenerator";
+import { PrismaExperienceGuideRepository } from "@/infrastructure/db/PrismaExperienceGuideRepository";
+
+export async function POST(
+  _request: Request,
+  { params }: { params: Promise<{ code: string }> }
+) {
+  const { code } = await params;
+  const property = await getProperty(code.toUpperCase());
+
+  if (!property) {
+    return Response.json({ error: "Property not found" }, { status: 404 });
+  }
+
+  try {
+    const useCase = new GenerateExperienceGuide(
+      new PrismaExperienceGuideRepository(),
+      new ClaudeExperienceGuideGenerator()
+    );
+    const content = await useCase.execute(property);
+    return Response.json(content);
+  } catch {
+    return Response.json({ error: "Failed to generate experience guide" }, { status: 500 });
+  }
+}
