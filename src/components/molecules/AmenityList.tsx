@@ -35,9 +35,9 @@ export function AmenityList({ amenities }: AmenityListProps) {
         return (
           <li
             key={key}
-            className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+            className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm"
           >
-            {config?.icon}
+            <span className="text-emerald-500">{config?.icon}</span>
             {label}
           </li>
         );

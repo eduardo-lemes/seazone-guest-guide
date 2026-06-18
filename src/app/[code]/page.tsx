@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
 import { getProperty } from "@/lib/db/queries/properties";
 import { GuideLayout } from "@/components/templates/GuideLayout";
-import { PropertyHeader } from "@/components/organisms/PropertyHeader";
 import { AccessInfo } from "@/components/organisms/AccessInfo";
 import { StayRules } from "@/components/organisms/StayRules";
 import { ContactSection } from "@/components/organisms/ContactSection";
 import { ExperienceGuideLoader } from "@/components/organisms/ExperienceGuideLoader";
-import { ChatPanel } from "@/components/organisms/ChatPanel";
+import { AmenityList } from "@/components/molecules/AmenityList";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -18,12 +17,12 @@ export default async function GuidePage({ params }: Props) {
 
   return (
     <GuideLayout
-      header={<PropertyHeader property={property} />}
+      property={property}
       accessInfo={<AccessInfo operational={property.operational} />}
       stayRules={<StayRules rules={property.rules} />}
       contact={<ContactSection property={property} />}
+      amenities={<AmenityList amenities={property.amenities} />}
       experienceGuide={<ExperienceGuideLoader propertyCode={property.code} />}
-      chatPanel={<ChatPanel propertyCode={property.code} />}
     />
   );
 }
