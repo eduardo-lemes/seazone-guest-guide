@@ -36,7 +36,7 @@ async function main() {
         propertyAccessInstructions: "Use o código 4521 na fechadura eletrônica",
         propertyPassword: "4521",
         hasParkingSpot: true,
-        parkingSpotIdentifier: "Vaga 12 — subsolo B1",
+        parkingSpotIdentifier: "Vaga 12 - subsolo B1",
         parkingSpotInstructions: "Portão lateral, código 7890 no interfone",
       },
       rules: {
@@ -169,7 +169,7 @@ async function main() {
             name: "Centro Histórico de Florianópolis",
             distance: "Aprox. 4 km",
             description:
-              "Mercado Público, Catedral, Palácio Cruz e Sousa — o coração histórico e cultural da cidade.",
+              "Mercado Público, Catedral, Palácio Cruz e Sousa - o coração histórico e cultural da cidade.",
           },
         ],
         essentials: [
@@ -243,7 +243,7 @@ async function main() {
             name: "Mini Mundo",
             distance: "Aprox. 2,5 km",
             description:
-              "Parque com maquetes em escala de monumentos mundiais — diversão para toda a família.",
+              "Parque com maquetes em escala de monumentos mundiais - diversão para toda a família.",
           },
           {
             name: "Parque Knorr",
@@ -273,7 +273,7 @@ async function main() {
           },
         ],
         seasonalTip:
-          "Junho é plena temporada de inverno em Gramado — temperaturas podem cair abaixo de 5°C à noite. Traga agasalho, cachecol e luvas. É também época do Natal Luz, com decoração especial na cidade.",
+          "Junho é plena temporada de inverno em Gramado - temperaturas podem cair abaixo de 5°C à noite. Traga agasalho, cachecol e luvas. É também época do Natal Luz, com decoração especial na cidade.",
       },
     },
   });
@@ -592,7 +592,7 @@ async function main() {
           },
         ],
         seasonalTip:
-          "Junho no Rio ainda tem dias quentes (22°C–28°C), mas as noites refrescam. Leve uma jaqueta leve para as saídas à noite. A praia fica menos cheia que no verão — ótimo momento para curtir Copacabana com mais tranquilidade.",
+          "Junho no Rio ainda tem dias quentes (22°C–28°C), mas as noites refrescam. Leve uma jaqueta leve para as saídas à noite. A praia fica menos cheia que no verão - ótimo momento para curtir Copacabana com mais tranquilidade.",
       },
     },
   });
@@ -636,7 +636,7 @@ async function main() {
             name: "Jardim Botânico de Curitiba",
             distance: "Aprox. 600 m",
             description:
-              "Cartão-postal da cidade com a famosa estufa de ferro e vidro, jardins formais e trilhas — entrada gratuita.",
+              "Cartão-postal da cidade com a famosa estufa de ferro e vidro, jardins formais e trilhas - entrada gratuita.",
           },
           {
             name: "Museu Oscar Niemeyer",
@@ -648,7 +648,7 @@ async function main() {
             name: "Ópera de Arame",
             distance: "Aprox. 6 km",
             description:
-              "Teatro construído em tubos de aço sobre uma pedreira desativada, cercado de lago e natureza — estrutura única no mundo.",
+              "Teatro construído em tubos de aço sobre uma pedreira desativada, cercado de lago e natureza - estrutura única no mundo.",
           },
         ],
         essentials: [
@@ -672,7 +672,7 @@ async function main() {
           },
         ],
         seasonalTip:
-          "Curitiba em junho é bastante fria — espere temperaturas entre 5°C e 15°C, com geadas ocasionais nas madrugadas. Traga casaco pesado, cachecol e luvas. Os dias ensolarados são revigorantes, mas as noites pedem camadas extras.",
+          "Curitiba em junho é bastante fria - espere temperaturas entre 5°C e 15°C, com geadas ocasionais nas madrugadas. Traga casaco pesado, cachecol e luvas. Os dias ensolarados são revigorantes, mas as noites pedem camadas extras.",
       },
     },
   });

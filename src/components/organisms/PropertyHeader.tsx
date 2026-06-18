@@ -36,7 +36,7 @@ export function PropertyHeader({ property }: Props) {
             </h1>
             <p className="mt-1.5 flex items-center gap-1.5 text-sm text-slate-500">
               <MapPin size={13} className="shrink-0 text-[#F07060]" />
-              {address.neighborhood}, {address.city} — {address.state}
+              {address.neighborhood}, {address.city} - {address.state}
             </p>
           </div>
 

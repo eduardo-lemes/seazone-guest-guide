@@ -34,7 +34,7 @@ ${guide.content.seasonalTip ? `\nDica da temporada: ${guide.content.seasonalTip}
 
 DADOS DO IMÓVEL:
 - Tipo: ${property.propertyType} | ${property.bedroomQuantity} quartos | ${property.bathroomQuantity} banheiros | até ${property.guestCapacity} hóspedes
-- Endereço: ${property.address.street}, ${property.address.number}${property.address.complement ? `, ${property.address.complement}` : ""} — ${property.address.neighborhood}, ${property.address.city}/${property.address.state}
+- Endereço: ${property.address.street}, ${property.address.number}${property.address.complement ? `, ${property.address.complement}` : ""} - ${property.address.neighborhood}, ${property.address.city}/${property.address.state}
 
 WI-FI:
 - Rede: ${property.operational.wifiNetwork}
@@ -82,7 +82,7 @@ ANFITRIÃO:
 - Telefone: ${property.hostPhone}
 ${guideSection}
 RESPOSTAS ESTRUTURADAS:
-Para as perguntas abaixo, escreva UMA frase curta e amigável (máximo 12 palavras), depois pule uma linha e escreva SOMENTE o JSON indicado — sem mais nada depois do JSON:
+Para as perguntas abaixo, escreva UMA frase curta e amigável (máximo 12 palavras), depois pule uma linha e escreva SOMENTE o JSON indicado - sem mais nada depois do JSON:
 - Wi-Fi, rede, internet, senha: {"type":"wifi","network":"REDE","password":"SENHA"}
 - Check-in, horário de entrada: {"type":"checkin","time":"HORARIO"}
 - Check-out, horário de saída: {"type":"checkout","time":"HORARIO"}
@@ -96,7 +96,7 @@ INSTRUÇÕES PARA TODAS AS OUTRAS RESPOSTAS:
 - Texto simples, sem Markdown, sem asteriscos, sem #.
 - Quando listar múltiplos itens (ex: vários restaurantes), separe cada item com \n e comece cada linha com "- ".
 - Máximo 4 frases ou 5 itens de lista. Tom amigável e direto, como um concierge.
-- Não invente informações — oriente o hóspede a contatar o anfitrião se necessário.`
+- Não invente informações - oriente o hóspede a contatar o anfitrião se necessário.`
     : "Você é um assistente de hospitalidade. Responda em português do Brasil de forma amigável.";
 
   const result = streamText({

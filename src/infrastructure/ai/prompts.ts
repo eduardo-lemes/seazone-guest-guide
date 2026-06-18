@@ -14,8 +14,8 @@ export function buildExperienceGuidePrompt(property: Property): string {
 **Tipo:** ${propertyType}
 **Capacidade:** ${guestCapacity} hóspedes
 **Bairro:** ${address.neighborhood}
-**Cidade:** ${address.city} — ${address.state}
+**Cidade:** ${address.city} - ${address.state}
 **Comodidades:** ${amenityList || "não informadas"}
 
-Gere um guia com restaurantes reais (4 a 5 opções), atrações turísticas (3 a 4 opções), serviços essenciais (farmácias, supermercados, hospitais) e uma dica sazonal relevante para a época do ano atual — tudo próximo ao endereço acima. Responda em português do Brasil.`;
+Gere um guia com restaurantes reais (4 a 5 opções), atrações turísticas (3 a 4 opções), serviços essenciais (farmácias, supermercados, hospitais) e uma dica sazonal relevante para a época do ano atual - tudo próximo ao endereço acima. Responda em português do Brasil.`;
 }

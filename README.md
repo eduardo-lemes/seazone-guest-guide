@@ -1,6 +1,6 @@
 # Seazone Guest Guide
 
-Guia digital para hóspedes de imóveis Seazone. Cada propriedade tem uma URL única (ex: `/FLN001`) com conteúdo personalizado gerado por IA, mapa interativo e assistente virtual com streaming.
+Guia digital para hóspedes de imóveis Seazone. Cada propriedade tem uma URL única (ex: `/CWB001`) com conteúdo personalizado gerado por IA, mapa interativo e assistente virtual com streaming.
 
 ---
 

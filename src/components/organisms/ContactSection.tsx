@@ -11,7 +11,7 @@ export function ContactSection({ property }: ContactSectionProps) {
     `${address.street}, ${address.number}`,
     address.complement,
     address.neighborhood,
-    `${address.city} — ${address.state}`,
+    `${address.city} - ${address.state}`,
     address.postalCode,
   ]
     .filter(Boolean)

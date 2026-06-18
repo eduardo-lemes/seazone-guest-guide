@@ -74,7 +74,7 @@ export function Footer() {
             © {new Date().getFullYear()} Seazone Serviços Ltda. Todos os direitos reservados.
           </p>
           <p className="text-xs text-white/20">
-            Guia do Hóspede — gerado com IA
+            Guia do Hóspede
           </p>
         </div>
       </div>
