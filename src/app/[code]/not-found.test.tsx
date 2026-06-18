@@ -13,13 +13,8 @@ describe("NotFound", () => {
     expect(screen.getByText(/imóvel não encontrado/i)).toBeInTheDocument();
   });
 
-  it("has a link back to home", () => {
+  it("tells the user to check the link from the host", () => {
     render(<NotFound />);
-    expect(screen.getByRole("link", { name: /voltar ao início/i })).toHaveAttribute("href", "/");
-  });
-
-  it("shows available property links", () => {
-    render(<NotFound />);
-    expect(screen.getByRole("link", { name: /FLN001/i })).toHaveAttribute("href", "/FLN001");
+    expect(screen.getByText(/verifique o link recebido/i)).toBeInTheDocument();
   });
 });
