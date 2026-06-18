@@ -50,7 +50,6 @@ export function TabbedContent({
     }
     window.addEventListener("switch-tab", onSwitchTab);
     return () => window.removeEventListener("switch-tab", onSwitchTab);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
