@@ -20,4 +20,10 @@ describe("AmenityList", () => {
     render(<AmenityList amenities={{}} />);
     expect(screen.getByText("Nenhuma amenidade informada.")).toBeInTheDocument();
   });
+
+  it("uses the key as label for unknown amenity keys", () => {
+    const amenities: Amenities = { rooftopPool: true };
+    render(<AmenityList amenities={amenities} />);
+    expect(screen.getByText("rooftopPool")).toBeInTheDocument();
+  });
 });
