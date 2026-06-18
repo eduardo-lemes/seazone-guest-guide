@@ -51,10 +51,29 @@ function parseStructured(text: string): StructuredMessage | null {
   }
 }
 
+/** Splits a message into prose + structured card (text may precede JSON on a new line) */
+function splitMessageAndCard(text: string): { prose: string; card: StructuredMessage | null } {
+  const lines = text.trim().split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.startsWith("{") || line.startsWith("```")) {
+      const card = parseStructured(line);
+      if (card) {
+        return { prose: lines.slice(0, i).join("\n").trim(), card };
+      }
+    }
+  }
+  return { prose: text, card: null };
+}
+
 /** Returns true when the text looks like an in-progress JSON blob */
 function isLikelyStreamingJson(text: string): boolean {
   const t = text.trim();
-  return t.startsWith("{") && !t.endsWith("}");
+  if (t.startsWith("{") && !t.endsWith("}")) return true;
+  // text + partial JSON at end (e.g. "Aqui está!\n{...")
+  const lines = t.split("\n");
+  const last = lines[lines.length - 1].trim();
+  return last.startsWith("{") && !last.endsWith("}");
 }
 
 // ---------- Copy button ----------
@@ -431,15 +450,36 @@ function MessageBubble({
   const isUser = message.role === "user";
 
   if (!isUser) {
-    // Suppress raw JSON while it's being streamed
-    if (isStreaming && isLikelyStreamingJson(text)) return null;
+    // During streaming: show prose portion and hide any partial JSON
+    if (isStreaming) {
+      if (isLikelyStreamingJson(text)) {
+        const jsonStart = text.indexOf("\n{");
+        const prose = jsonStart > -1 ? text.slice(0, jsonStart).trim() : "";
+        if (!prose) return null;
+        return (
+          <div className="flex items-end gap-2" style={fadeInStyle}>
+            <BotAvatar />
+            <div className="max-w-[82%] rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-4 py-3 shadow-sm">
+              <SmartText text={prose} />
+            </div>
+          </div>
+        );
+      }
+    }
 
-    const structured = parseStructured(text);
-    if (structured) {
+    const { prose, card } = splitMessageAndCard(text);
+    if (card) {
       return (
         <div className="flex items-end gap-2" style={fadeInStyle}>
           <BotAvatar />
-          <StructuredCard data={structured} />
+          <div className="flex min-w-0 flex-col gap-2">
+            {prose && (
+              <div className="max-w-[82%] rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                <SmartText text={prose} />
+              </div>
+            )}
+            <StructuredCard data={card} />
+          </div>
         </div>
       );
     }

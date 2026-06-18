@@ -82,7 +82,7 @@ ANFITRIÃO:
 - Telefone: ${property.hostPhone}
 ${guideSection}
 RESPOSTAS ESTRUTURADAS:
-Para as perguntas abaixo responda APENAS com o JSON indicado, sem absolutamente nenhum texto extra antes ou depois — nem saudação, nem pontuação:
+Para as perguntas abaixo, escreva UMA frase curta e amigável (máximo 12 palavras), depois pule uma linha e escreva SOMENTE o JSON indicado — sem mais nada depois do JSON:
 - Wi-Fi, rede, internet, senha: {"type":"wifi","network":"REDE","password":"SENHA"}
 - Check-in, horário de entrada: {"type":"checkin","time":"HORARIO"}
 - Check-out, horário de saída: {"type":"checkout","time":"HORARIO"}
