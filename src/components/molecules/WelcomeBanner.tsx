@@ -1,15 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Star, MessageCircle, Sun, ArrowRight } from "lucide-react";
+import { MapPin, Star, MessageCircle, Sun, ArrowRight, Sparkles } from "lucide-react";
 import type { ExperienceGuideContent } from "@/types/property";
+
+const MONTHS_PT = [
+  "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+  "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro",
+];
+
+function currentMonthLabel(city: string) {
+  return `${MONTHS_PT[new Date().getMonth()]} em ${city}`;
+}
+
+function truncateToTwoSentences(text: string): string {
+  const sentences = text.split(/(?<=[.!?])\s+/);
+  return sentences.slice(0, 2).join(" ");
+}
 
 type Props = {
   propertyName: string;
   propertyCode: string;
+  city: string;
 };
 
-export function WelcomeBanner({ propertyName, propertyCode }: Props) {
+export function WelcomeBanner({ propertyName, propertyCode, city }: Props) {
   const [seasonalTip, setSeasonalTip] = useState<string | null>(null);
 
   useEffect(() => {
@@ -54,32 +69,46 @@ export function WelcomeBanner({ propertyName, propertyCode }: Props) {
         </div>
 
         {/* Dica da temporada */}
-        <div className="flex flex-col justify-between border-t border-slate-100 bg-amber-50 p-6 md:w-[42%] md:border-l md:border-t-0">
+        <div className="flex flex-col justify-between border-t border-slate-100 bg-amber-50/60 p-6 md:w-[42%] md:border-l md:border-t-0">
           <div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
                 <Sun size={14} className="text-amber-500" />
+                <p className="text-xs font-semibold uppercase tracking-widest text-amber-600">
+                  Dica da Temporada
+                </p>
               </div>
-              <p className="text-sm font-semibold text-amber-700">Dica da Temporada</p>
+              <span className="flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-medium text-slate-400">
+                <Sparkles size={9} />
+                IA
+              </span>
             </div>
 
+            {/* Subtítulo dinâmico */}
+            <p className="mt-3 text-sm font-semibold text-amber-800">
+              {currentMonthLabel(city)}
+            </p>
+
+            {/* Conteúdo */}
             {seasonalTip ? (
-              <p className="mt-3 text-sm leading-relaxed text-amber-900">{seasonalTip}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-amber-700">
+                {truncateToTwoSentences(seasonalTip)}
+              </p>
             ) : (
-              <div className="mt-3 space-y-2">
-                <div className="h-3 w-full animate-pulse rounded bg-amber-200" />
-                <div className="h-3 w-4/5 animate-pulse rounded bg-amber-200" />
-                <div className="h-3 w-3/5 animate-pulse rounded bg-amber-200" />
+              <div className="mt-2 space-y-2">
+                <div className="h-3 w-full animate-pulse rounded bg-amber-200/70" />
+                <div className="h-3 w-4/5 animate-pulse rounded bg-amber-200/70" />
               </div>
             )}
           </div>
 
           <button
             onClick={goToExperiencias}
-            className="mt-5 flex items-center gap-1.5 text-sm font-medium text-[#F07060] transition-colors hover:text-[#e8614f]"
+            className="mt-4 flex w-fit items-center gap-1.5 text-sm font-medium text-[#F07060] transition-colors hover:text-[#e8614f]"
           >
-            Ver recomendações da região
-            <ArrowRight size={14} />
+            Ver guia de experiências
+            <ArrowRight size={13} />
           </button>
         </div>
       </div>
