@@ -108,7 +108,11 @@ Preencha `.env`:
 
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/seazone?schema=public"
+
+# Use uma das duas — Anthropic tem prioridade se ambas estiverem definidas
 ANTHROPIC_API_KEY="sk-ant-..."
+# ou
+GOOGLE_GENERATIVE_AI_API_KEY="AIza..."
 ```
 
 ### 3. Migrar banco e popular seed
