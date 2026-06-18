@@ -10,7 +10,7 @@ import type { Property } from "@/types/property";
 type LatLng = [number, number];
 type NominatimResult = { lat: string; lon: string };
 
-const FLORIANOPOLIS: LatLng = [-27.5954, -48.548];
+const BRAZIL_CENTER: LatLng = [-15.7801, -47.9292];
 
 type PoiCategory = "restaurant" | "attraction" | "pharmacy" | "supermarket" | "hospital";
 
@@ -124,21 +124,34 @@ function MapController({
   // Focus on a named POI via Nominatim geocoding
   useEffect(() => {
     if (!focusName) return;
-    fetch(
-      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusName)}&format=json&limit=1`,
-      { headers: { "User-Agent": "SeazoneGuestGuide/1.0" } }
-    )
-      .then((r) => r.json())
-      .then((data: NominatimResult[]) => {
-        if (data[0]) {
-          const lat = parseFloat(data[0].lat);
-          const lon = parseFloat(data[0].lon);
-          map.flyTo([lat, lon], 17, { animate: true, duration: 1.2 });
-          onFocusResolved(lat, lon, focusName);
-        }
-      })
-      .catch(() => {})
-      .finally(() => onFocusHandled());
+    const [lat, lon] = homeCenter;
+    const delta = 0.15;
+    const viewbox = `${lon - delta},${lat - delta},${lon + delta},${lat + delta}`;
+    // Try within property area first, then unrestricted
+    const attempts = [
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusName)}&format=json&limit=1&viewbox=${viewbox}&bounded=1`,
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusName)}&format=json&limit=1&viewbox=${viewbox}&bounded=0`,
+    ];
+    void (async () => {
+      for (const url of attempts) {
+        try {
+          const data: NominatimResult[] = await fetch(url, {
+            headers: { "User-Agent": "SeazoneGuestGuide/1.0" },
+          }).then((r) => r.json());
+          if (data[0]) {
+            const plat = parseFloat(data[0].lat);
+            const plon = parseFloat(data[0].lon);
+            map.flyTo([plat, plon], 17, { animate: true, duration: 1.2 });
+            onFocusResolved(plat, plon, focusName);
+            onFocusHandled();
+            return;
+          }
+        } catch { /* try next */ }
+      }
+      // Place not found — fly back to property area so the button still does something
+      map.flyTo(homeCenter, 15, { animate: true, duration: 0.8 });
+      onFocusHandled();
+    })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusName]);
 
@@ -213,7 +226,7 @@ export default function MapView({
   focusName = null,
   onFocusHandled = () => {},
 }: Props) {
-  const [center, setCenter] = useState<LatLng>(FLORIANOPOLIS);
+  const [center, setCenter] = useState<LatLng>(BRAZIL_CENTER);
   const [pois, setPois] = useState<Poi[]>([]);
   const [ready, setReady] = useState(false);
   const [returnHome, setReturnHome] = useState(false);
@@ -234,21 +247,33 @@ export default function MapView({
       shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
     });
 
-    const q = `${property.address.street}, ${property.address.neighborhood}, ${property.address.city}, Brasil`;
-    fetch(
-      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`,
-      { headers: { "User-Agent": "SeazoneGuestGuide/1.0" } }
-    )
-      .then((r) => r.json())
-      .then(async (data: NominatimResult[]) => {
-        const coords: LatLng = data[0]
-          ? [parseFloat(data[0].lat), parseFloat(data[0].lon)]
-          : FLORIANOPOLIS;
+    async function geocode(): Promise<LatLng> {
+      const tryQuery = async (q: string): Promise<LatLng | null> => {
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`,
+            { headers: { "User-Agent": "SeazoneGuestGuide/1.0" } }
+          );
+          const data: NominatimResult[] = await res.json();
+          if (data[0]) return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+        } catch { /* ignore */ }
+        return null;
+      };
+
+      const { street, neighborhood, city, state } = property.address;
+      return (
+        (await tryQuery(`${street}, ${neighborhood}, ${city}, Brasil`)) ??
+        (await tryQuery(`${city}, ${state}, Brasil`)) ??
+        BRAZIL_CENTER
+      );
+    }
+
+    geocode()
+      .then(async (coords) => {
         setCenter(coords);
         const nearbyPois = await fetchPois(coords[0], coords[1]).catch(() => []);
         setPois(nearbyPois);
       })
-      .catch(() => {})
       .finally(() => setReady(true));
   }, [property.address]);
 

@@ -24,26 +24,3 @@ export async function saveExperienceGuide(
   });
 }
 
-// ---------- PropertyInsight — seasonal tip permanente ----------
-
-/**
- * Retorna o seasonal tip travado para o imóvel, ou null se ainda não existir.
- */
-export async function getPropertyInsight(propertyCode: string): Promise<string | null> {
-  const row = await prisma.propertyInsight.findUnique({ where: { propertyCode } });
-  return row?.seasonalTip ?? null;
-}
-
-/**
- * Salva o seasonal tip APENAS se ainda não existir (nunca sobrescreve).
- */
-export async function savePropertyInsight(
-  propertyCode: string,
-  seasonalTip: string
-): Promise<void> {
-  await prisma.propertyInsight.upsert({
-    where: { propertyCode },
-    update: {}, // ← intencionalmente vazio: nunca sobrescreve
-    create: { propertyCode, seasonalTip },
-  });
-}

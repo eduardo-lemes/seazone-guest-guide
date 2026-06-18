@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { AutoParseableOutputFormat } from "@anthropic-ai/sdk";
 import type { IExperienceGuideGenerator } from "@/application/ports/IExperienceGuideGenerator";
 import type { Property, ExperienceGuideContent } from "@/types/property";
-import { buildExperienceGuidePrompt, fetchRealPoisForProperty } from "./prompts";
+import { buildExperienceGuidePrompt } from "./prompts";
 
 const SCHEMA = {
   type: "object",
@@ -67,9 +67,8 @@ export class ClaudeExperienceGuideGenerator implements IExperienceGuideGenerator
     this.client = new Anthropic();
   }
 
-  async generate(property: Property, lockedSeasonalTip?: string): Promise<ExperienceGuideContent> {
-    const realPois = await fetchRealPoisForProperty(property);
-    const prompt = buildExperienceGuidePrompt(property, realPois, lockedSeasonalTip);
+  async generate(property: Property): Promise<ExperienceGuideContent> {
+    const prompt = buildExperienceGuidePrompt(property);
 
     const response = await this.client.messages.parse({
       model: "claude-sonnet-4-6",
@@ -83,9 +82,6 @@ export class ClaudeExperienceGuideGenerator implements IExperienceGuideGenerator
       throw new Error("Claude returned no structured output");
     }
 
-    const result = response.parsed_output;
-    // Garante que o tip travado seja preservado mesmo se o modelo divergir
-    if (lockedSeasonalTip) result.seasonalTip = lockedSeasonalTip;
-    return result;
+    return response.parsed_output;
   }
 }

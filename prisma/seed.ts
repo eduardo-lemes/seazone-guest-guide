@@ -4,6 +4,11 @@ import { PrismaClient } from "../src/generated/prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  // Reset experience guides so seed data always wins over AI-generated cache
+  await prisma.experienceGuide.deleteMany({
+    where: { propertyCode: { in: ["FLN001", "GRM001"] } },
+  });
+
   await prisma.property.upsert({
     where: { code: "FLN001" },
     update: {},
@@ -112,6 +117,164 @@ async function main() {
       ],
       hostName: "Carlos Eduardo",
       hostPhone: "+5554998765432",
+    },
+  });
+
+  await prisma.experienceGuide.upsert({
+    where: { propertyCode: "FLN001" },
+    update: {},
+    create: {
+      propertyCode: "FLN001",
+      content: {
+        welcomeMessage:
+          "Seu apartamento fica no coração da Trindade, a poucos minutos das principais atrações da ilha. Aproveite a localização privilegiada para explorar praias, restaurantes e a vibrante vida cultural de Florianópolis.",
+        restaurants: [
+          {
+            name: "Box 32",
+            distance: "Aprox. 1,2 km",
+            description:
+              "Boteco tradicional de Florianópolis, famoso pelos petiscos e pelo ambiente descontraído.",
+          },
+          {
+            name: "Armazém Vieira",
+            distance: "Aprox. 2,5 km",
+            description: "Referência em frutos do mar desde 1958, ícone da gastronomia catarinense.",
+          },
+          {
+            name: "Rancho Açoriano",
+            distance: "Aprox. 1,8 km",
+            description:
+              "Culinária açoriana autêntica com destaque para camarão, tainha e ostras da ilha.",
+          },
+          {
+            name: "Restaurante Ponto G",
+            distance: "Aprox. 900 m",
+            description:
+              "Ambiente descontraído com boa variedade de pratos executivos e opções vegetarianas.",
+          },
+        ],
+        attractions: [
+          {
+            name: "Lagoa da Conceição",
+            distance: "Aprox. 12 km",
+            description:
+              "Lagoa de água salgada cercada de dunas, trilhas e restaurantes à beira da água.",
+          },
+          {
+            name: "Praia da Joaquina",
+            distance: "Aprox. 18 km",
+            description: "Famosa pelas dunas e pelas ondas ideais para o surf.",
+          },
+          {
+            name: "Centro Histórico de Florianópolis",
+            distance: "Aprox. 4 km",
+            description:
+              "Mercado Público, Catedral, Palácio Cruz e Sousa — o coração histórico e cultural da cidade.",
+          },
+        ],
+        essentials: [
+          {
+            name: "Farmácia Catarinense",
+            type: "pharmacy",
+            distance: "Aprox. 300 m",
+            description: "Farmácia 24h na Av. Madre Benvenuta.",
+          },
+          {
+            name: "Supermercado Nacional",
+            type: "supermarket",
+            distance: "Aprox. 700 m",
+            description: "Supermercado completo com hortifrúti e padaria.",
+          },
+          {
+            name: "Hospital Universitário - HU/UFSC",
+            type: "hospital",
+            distance: "Aprox. 1,5 km",
+            description: "Hospital universitário de referência, atendimento 24h.",
+          },
+        ],
+        seasonalTip:
+          "Em junho, as temperaturas ficam entre 14°C e 20°C. Leve um agasalho para as noites frescas e aproveite a baixa temporada com praias mais tranquilas.",
+      },
+    },
+  });
+
+  await prisma.experienceGuide.upsert({
+    where: { propertyCode: "GRM001" },
+    update: {},
+    create: {
+      propertyCode: "GRM001",
+      content: {
+        welcomeMessage:
+          "Bem-vindo ao Chalé Serra Gramado! Você está no coração da cidade mais encantadora da Serra Gaúcha. Explore a arquitetura europeia, a gastronomia premiada e os parques naturais deslumbrantes ao redor.",
+        restaurants: [
+          {
+            name: "Bella Italia",
+            distance: "Aprox. 1,5 km",
+            description:
+              "Restaurante italiano clássico, referência em massas artesanais e risotos na Serra Gaúcha.",
+          },
+          {
+            name: "Gasthof Edelweiss",
+            distance: "Aprox. 2 km",
+            description:
+              "Culinária alemã e colonial gaúcha, famoso pelo café colonial com cucas, geleias e embutidos.",
+          },
+          {
+            name: "Restaurante Saint Andrews",
+            distance: "Aprox. 1,8 km",
+            description:
+              "Ambiente sofisticado com destaque para fondues de queijo e chocolate, ideal para o frio da serra.",
+          },
+          {
+            name: "Colina Verde Restaurante",
+            distance: "Aprox. 1,2 km",
+            description:
+              "Vista panorâmica da cidade e cardápio variado com pratos regionais e internacionais.",
+          },
+        ],
+        attractions: [
+          {
+            name: "Lago Negro",
+            distance: "Aprox. 2 km",
+            description:
+              "Cartão-postal de Gramado com pedalinhos, jardins floridos e paisagem europeia.",
+          },
+          {
+            name: "Mini Mundo",
+            distance: "Aprox. 2,5 km",
+            description:
+              "Parque com maquetes em escala de monumentos mundiais — diversão para toda a família.",
+          },
+          {
+            name: "Parque Knorr",
+            distance: "Aprox. 1,5 km",
+            description:
+              "Jardim botânico com mais de 1.000 espécies de plantas, trilhas e cachoeira.",
+          },
+        ],
+        essentials: [
+          {
+            name: "Farmácia Panvel",
+            type: "pharmacy",
+            distance: "Aprox. 1 km",
+            description: "Rede de farmácias com amplo estoque, aberta todos os dias.",
+          },
+          {
+            name: "Supermercado Volpato",
+            type: "supermarket",
+            distance: "Aprox. 800 m",
+            description: "Supermercado local bem abastecido, referência na cidade.",
+          },
+          {
+            name: "Hospital Arco-Íris",
+            type: "hospital",
+            distance: "Aprox. 2,5 km",
+            description: "Principal hospital da região com pronto-atendimento 24h.",
+          },
+        ],
+        seasonalTip:
+          "Junho é plena temporada de inverno em Gramado — temperaturas podem cair abaixo de 5°C à noite. Traga agasalho, cachecol e luvas. É também época do Natal Luz, com decoração especial na cidade.",
+      },
     },
   });
 
