@@ -6,7 +6,7 @@ Guia digital para hóspedes de imóveis Seazone. Cada propriedade tem uma URL ú
 
 ## Arquitetura
 
-Clean Architecture com Atomic Design no frontend. A lógica de negócio (`application/`) é independente de infraestrutura — o banco e o provedor de IA podem ser trocados sem tocar nos casos de uso.
+Clean Architecture com Atomic Design no frontend. A lógica de negócio (`application/`) é independente de infraestrutura - o banco e o provedor de IA podem ser trocados sem tocar nos casos de uso.
 
 ```
 src/
@@ -16,7 +16,7 @@ src/
 ├── infrastructure/     # Implementações concretas
 │   ├── ai/             # VercelAIExperienceGuideGenerator + prompts
 │   └── db/             # PrismaExperienceGuideRepository
-├── app/                # Next.js App Router — rotas e API handlers
+├── app/                # Next.js App Router - rotas e API handlers
 ├── components/         # Atomic Design: atoms → molecules → organisms → templates
 ├── lib/                # Singleton Prisma + queries + model factory
 └── types/              # Tipos de domínio compartilhados
@@ -32,8 +32,8 @@ src/
 | Linguagem | TypeScript strict |
 | Estilo | Tailwind CSS v4 |
 | ORM | Prisma 6 |
-| IA — Geração de guia | Vercel AI SDK v6 + `@ai-sdk/anthropic` |
-| IA — Chat | Vercel AI SDK v6 — `streamText` + `useChat` |
+| IA - Geração de guia | Vercel AI SDK v6 + `@ai-sdk/anthropic` |
+| IA - Chat | Vercel AI SDK v6 - `streamText` + `useChat` |
 | Mapa | Leaflet + react-leaflet + Nominatim + Overpass API |
 | Testes | Vitest 4 + Testing Library + happy-dom |
 | Banco | PostgreSQL |
@@ -46,11 +46,11 @@ src/
 
 O guia é gerado uma única vez via `POST /api/experiences/[code]` e armazenado no banco. Requisições seguintes retornam o cache sem chamar a IA. Os dados do imóvel (nome, cidade, bairro, tipo, capacidade, comodidades) são injetados no prompt para grounding real.
 
-Para os imóveis seedados, o guia é pré-populado com locais reais curados — restaurantes e atrações que existem no OpenStreetMap — garantindo que o botão "Ver no mapa" funcione sem depender de geração de IA.
+Para os imóveis seedados, o guia é pré-populado com locais reais curados - restaurantes e atrações que existem no OpenStreetMap - garantindo que o botão "Ver no mapa" funcione sem depender de geração de IA.
 
 ### Chat com Streaming
 
-`streamText` no route handler, `useChat` com `DefaultChatTransport` no cliente. O system prompt injeta todos os dados do imóvel para respostas contextualizadas. Respostas estruturadas (Wi-Fi, acesso, horários, recomendações) são parseadas em cards interativos pelo cliente — texto amigável aparece acima de cada card.
+`streamText` no route handler, `useChat` com `DefaultChatTransport` no cliente. O system prompt injeta todos os dados do imóvel para respostas contextualizadas. Respostas estruturadas (Wi-Fi, acesso, horários, recomendações) são parseadas em cards interativos pelo cliente - texto amigável aparece acima de cada card.
 
 ### Mapa
 
@@ -120,8 +120,8 @@ npm run test:coverage    # com relatório de cobertura
 
 | Código | Imóvel | Cidade |
 |--------|--------|--------|
-| `FLN001` | Apartamento Beira-Mar | Florianópolis — SC |
-| `GRM001` | Chalé Serra Gramado | Gramado — RS |
-| `POA001` | Loft Gasômetro | Porto Alegre — RS |
-| `RIO001` | Apartamento Copacabana | Rio de Janeiro — RJ |
-| `CWB001` | Studio Jardim Botânico | Curitiba — PR |
+| `GRM001` | Chalé Serra Gramado | Gramado - RS |
+| `POA001` | Loft Gasômetro | Porto Alegre - RS |
+| `RIO001` | Apartamento Copacabana | Rio de Janeiro - RJ |
+| `CWB001` | Studio Jardim Botânico | Curitiba - PR |
+| `FLN001` | Apartamento Beira-Mar | Florianópolis - SC |

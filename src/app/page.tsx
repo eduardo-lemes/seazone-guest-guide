@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  redirect("/FLN001");
+  redirect("/GRM001");
 }
