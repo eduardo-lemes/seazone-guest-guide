@@ -111,6 +111,8 @@ function MapController({
   returnHome,
   homeCenter,
   onReturnHandled,
+  city,
+  state,
 }: {
   focusName: string | null;
   onFocusHandled: () => void;
@@ -118,6 +120,8 @@ function MapController({
   returnHome: boolean;
   homeCenter: LatLng;
   onReturnHandled: () => void;
+  city: string;
+  state: string;
 }) {
   const map = useMap();
 
@@ -127,10 +131,11 @@ function MapController({
     const [lat, lon] = homeCenter;
     const delta = 0.15;
     const viewbox = `${lon - delta},${lat - delta},${lon + delta},${lat + delta}`;
-    // Try within property area first, then unrestricted
+    const cityQuery = encodeURIComponent(`${focusName}, ${city}, ${state}, Brasil`);
+    // Try within viewbox first, then city-scoped, never globally unbounded
     const attempts = [
       `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusName)}&format=json&limit=1&viewbox=${viewbox}&bounded=1`,
-      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusName)}&format=json&limit=1&viewbox=${viewbox}&bounded=0`,
+      `https://nominatim.openstreetmap.org/search?q=${cityQuery}&format=json&limit=1`,
     ];
     void (async () => {
       for (const url of attempts) {
@@ -148,7 +153,7 @@ function MapController({
           }
         } catch { /* try next */ }
       }
-      // Place not found — fly back to property area so the button still does something
+      // Place not found - fly back to property area so the button still does something
       map.flyTo(homeCenter, 15, { animate: true, duration: 0.8 });
       onFocusHandled();
     })();
@@ -313,6 +318,8 @@ export default function MapView({
             returnHome={returnHome}
             homeCenter={center}
             onReturnHandled={() => setReturnHome(false)}
+            city={property.address.city}
+            state={property.address.state}
           />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -367,7 +374,7 @@ export default function MapView({
             {property.address.street}, {property.address.number}
           </p>
           <p className="mt-0.5 pl-6 text-xs text-slate-500">
-            {property.address.neighborhood}, {property.address.city} — {property.address.state}
+            {property.address.neighborhood}, {property.address.city} - {property.address.state}
           </p>
         </div>
       </div>
