@@ -26,9 +26,9 @@ export function ContactSection({ property }: ContactSectionProps) {
         </div>
         <a
           href={`tel:${property.hostPhone}`}
-          className="flex items-center gap-2 rounded-lg bg-[#F07060] px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-[#e8614f]"
+          className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50"
         >
-          <Phone size={14} />
+          <Phone size={13} />
           Ligar
         </a>
       </div>

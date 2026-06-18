@@ -1,6 +1,7 @@
 import { TopNav } from "@/components/organisms/TopNav";
 import { PropertyHeader } from "@/components/organisms/PropertyHeader";
 import { TabbedContent } from "@/components/organisms/TabbedContent";
+import { WelcomeBanner } from "@/components/molecules/WelcomeBanner";
 import { ChatPanel } from "@/components/organisms/ChatPanel";
 import type { Property } from "@/types/property";
 
@@ -26,7 +27,10 @@ export function GuideLayout({
       <TopNav />
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-8">
         <PropertyHeader property={property} />
-        <div className="mt-8">
+        <div className="mt-4">
+          <WelcomeBanner propertyName={property.name} propertyCode={property.code} city={property.address.city} />
+        </div>
+        <div className="mt-6">
           <TabbedContent
             property={property}
             accessInfo={accessInfo}
