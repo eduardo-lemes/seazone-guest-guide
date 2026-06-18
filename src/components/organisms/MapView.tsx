@@ -170,13 +170,13 @@ function MapController({
 
 async function fetchPois(lat: number, lon: number): Promise<Poi[]> {
   const query = `
-    [out:json][timeout:15];
+    [out:json][timeout:15][maxsize:2097152];
     (
       node["amenity"="restaurant"]["name"](around:800,${lat},${lon});
       node["tourism"="attraction"]["name"](around:1200,${lat},${lon});
       node["amenity"="pharmacy"]["name"](around:800,${lat},${lon});
       node["shop"="supermarket"]["name"](around:800,${lat},${lon});
-      node["amenity"="hospital"]["name"](around:1500,${lat},${lon});
+      node["amenity"="hospital"]["name"](around:1000,${lat},${lon});
     );
     out body;
   `;
@@ -229,6 +229,7 @@ export default function MapView({
   const [center, setCenter] = useState<LatLng>(BRAZIL_CENTER);
   const [pois, setPois] = useState<Poi[]>([]);
   const [ready, setReady] = useState(false);
+  const [poisLoading, setPoisLoading] = useState(true);
   const [returnHome, setReturnHome] = useState(false);
   const [focusPoint, setFocusPoint] = useState<{ lat: number; lon: number; name: string } | null>(null);
   const [activeCategories, setActiveCategories] = useState<Set<PoiCategory>>(
@@ -268,13 +269,16 @@ export default function MapView({
       );
     }
 
-    geocode()
-      .then(async (coords) => {
-        setCenter(coords);
-        const nearbyPois = await fetchPois(coords[0], coords[1]).catch(() => []);
-        setPois(nearbyPois);
-      })
-      .finally(() => setReady(true));
+    geocode().then((coords) => {
+      setCenter(coords);
+      setReady(true);
+      fetchPois(coords[0], coords[1])
+        .catch(() => [])
+        .then((nearbyPois) => {
+          setPois(nearbyPois);
+          setPoisLoading(false);
+        });
+    });
   }, [property.address]);
 
   function toggleCategory(cat: PoiCategory) {
@@ -370,7 +374,9 @@ export default function MapView({
 
       {/* Category filter pills */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-medium text-slate-400">Filtrar:</span>
+        <span className="text-xs font-medium text-slate-400">
+          {poisLoading ? "Carregando pontos…" : "Filtrar:"}
+        </span>
         {ALL_CATEGORIES.map((cat) => {
           const { emoji, label, color } = CATEGORY_CONFIG[cat];
           const isActive = activeCategories.has(cat);
