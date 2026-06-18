@@ -16,7 +16,6 @@
     "@ai-sdk/anthropic": "^3.0.85",
     "@ai-sdk/google": "^3.0.83",
     "@ai-sdk/react": "^3.0.209",
-    "@anthropic-ai/sdk": "^0.104.2",
     "@prisma/client": "^6.19.3",
     "@types/leaflet": "^1.9.21",
     "ai": "^6.0.207",
