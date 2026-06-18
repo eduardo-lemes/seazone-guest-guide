@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send, X } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
@@ -16,6 +16,10 @@ const QUICK_SUGGESTIONS = [
   "Como faço o check-in?",
   "O que tem perto?",
 ];
+
+const TEASER_SESSION_KEY = "seazone_chat_teaser_seen";
+const TEASER_DELAY_MS = 2000;
+const TEASER_AUTODISMISS_MS = 6000;
 
 function MessageBubble({ message }: { message: UIMessage }) {
   const text = message.parts
@@ -62,8 +66,56 @@ function TypingIndicator() {
   );
 }
 
+type TeaserProps = {
+  visible: boolean;
+  onOpen: () => void;
+  onDismiss: () => void;
+};
+
+function ChatTeaser({ visible, onOpen, onDismiss }: TeaserProps) {
+  return (
+    <div
+      role="dialog"
+      aria-label="Convite para o assistente virtual"
+      style={{
+        transition: "opacity 0.3s ease, transform 0.3s ease",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(8px)",
+        pointerEvents: visible ? "auto" : "none",
+      }}
+      className="fixed bottom-24 right-4 z-50 w-72 sm:right-6"
+    >
+      <div className="relative rounded-2xl border border-slate-200 bg-white shadow-lg transition-shadow hover:shadow-xl">
+        <button
+          onClick={onOpen}
+          aria-label="Abrir assistente virtual"
+          className="w-full p-4 text-left"
+        >
+          <div className="flex items-center gap-2.5 pr-6">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F07060]/10">
+              <SeazoneIcon size={17} className="text-[#F07060]" />
+            </div>
+            <p className="text-sm font-semibold text-slate-800">Posso ajudar?</p>
+          </div>
+          <p className="mt-2 text-xs leading-relaxed text-slate-500">
+            Pergunte sobre Wi‑Fi, check‑in, check‑out ou restaurantes próximos.
+          </p>
+        </button>
+        <button
+          onClick={onDismiss}
+          aria-label="Fechar convite"
+          className="absolute right-3 top-3 rounded-full p-0.5 text-slate-400 transition-colors hover:text-slate-600"
+        >
+          <X size={14} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function ChatPanel({ propertyCode }: ChatPanelProps) {
   const [open, setOpen] = useState(false);
+  const [teaserVisible, setTeaserVisible] = useState(false);
   const [input, setInput] = useState("");
 
   const [transport] = useState(
@@ -74,6 +126,29 @@ export function ChatPanel({ propertyCode }: ChatPanelProps) {
 
   const isLoading = status === "submitted" || status === "streaming";
   const hasMessages = messages.length > 0;
+
+  useEffect(() => {
+    if (sessionStorage.getItem(TEASER_SESSION_KEY)) return;
+
+    const showTimer = setTimeout(() => setTeaserVisible(true), TEASER_DELAY_MS);
+    return () => clearTimeout(showTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!teaserVisible) return;
+    sessionStorage.setItem(TEASER_SESSION_KEY, "1");
+    const dismissTimer = setTimeout(() => setTeaserVisible(false), TEASER_AUTODISMISS_MS);
+    return () => clearTimeout(dismissTimer);
+  }, [teaserVisible]);
+
+  function dismissTeaser() {
+    setTeaserVisible(false);
+  }
+
+  function openChat() {
+    setTeaserVisible(false);
+    setOpen(true);
+  }
 
   function handleSend(text: string) {
     if (!text.trim() || isLoading) return;
@@ -88,8 +163,10 @@ export function ChatPanel({ propertyCode }: ChatPanelProps) {
 
   return (
     <>
+      <ChatTeaser visible={teaserVisible && !open} onOpen={openChat} onDismiss={dismissTeaser} />
+
       <button
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => { setOpen((o) => !o); setTeaserVisible(false); }}
         aria-label={open ? "Fechar chat" : "Abrir chat"}
         className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#F07060] text-white shadow-xl transition-all hover:scale-105 hover:bg-[#e8614f] active:scale-95"
       >
