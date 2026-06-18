@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Property {
-  code             String  @id
+  code             String           @id
   name             String
   propertyType     String
   bedroomQuantity  Int
@@ -22,14 +22,14 @@ model Property {
   images           String[]
   hostName         String
   hostPhone        String
-
-  experienceGuide ExperienceGuide?
+  experienceGuide  ExperienceGuide?
 }
 
 model ExperienceGuide {
   id           String   @id @default(cuid())
   propertyCode String   @unique
-  property     Property @relation(fields: [propertyCode], references: [code])
   content      Json
   generatedAt  DateTime @default(now())
+  property     Property @relation(fields: [propertyCode], references: [code])
 }
+

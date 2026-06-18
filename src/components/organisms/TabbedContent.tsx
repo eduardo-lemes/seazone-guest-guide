@@ -37,6 +37,7 @@ export function TabbedContent({
 }: Props) {
   const [active, setActive] = useState<Tab>("sobre");
   const [mapaVisited, setMapaVisited] = useState(false);
+  const [focusMapName, setFocusMapName] = useState<string | null>(null);
 
   function handleTabClick(id: Tab) {
     if (id === "mapa") setMapaVisited(true);
@@ -48,8 +49,18 @@ export function TabbedContent({
       const id = (e as CustomEvent<Tab>).detail;
       handleTabClick(id);
     }
+    function onFocusMap(e: Event) {
+      const { name } = (e as CustomEvent<{ name: string }>).detail;
+      setFocusMapName(name);
+      setMapaVisited(true);
+      setActive("mapa");
+    }
     window.addEventListener("switch-tab", onSwitchTab);
-    return () => window.removeEventListener("switch-tab", onSwitchTab);
+    window.addEventListener("focus-map", onFocusMap);
+    return () => {
+      window.removeEventListener("switch-tab", onSwitchTab);
+      window.removeEventListener("focus-map", onFocusMap);
+    };
   }, []);
 
   return (
@@ -115,7 +126,12 @@ export function TabbedContent({
 
         {mapaVisited && (
           <div hidden={active !== "mapa"}>
-            <MapView property={property} isActive={active === "mapa"} />
+            <MapView
+              property={property}
+              isActive={active === "mapa"}
+              focusName={focusMapName}
+              onFocusHandled={() => setFocusMapName(null)}
+            />
           </div>
         )}
       </div>

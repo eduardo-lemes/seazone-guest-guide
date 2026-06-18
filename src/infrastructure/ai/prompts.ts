@@ -4,7 +4,7 @@ export function buildExperienceGuidePrompt(property: Property): string {
   const { name, propertyType, guestCapacity, address, amenities } = property;
 
   const amenityList = Object.entries(amenities)
-    .filter(([, v]) => v === true)
+    .filter(([, value]) => value === true)
     .map(([key]) => key)
     .join(", ");
 
@@ -17,5 +17,5 @@ export function buildExperienceGuidePrompt(property: Property): string {
 **Cidade:** ${address.city} — ${address.state}
 **Comodidades:** ${amenityList || "não informadas"}
 
-Gere um guia com restaurantes, atrações turísticas, serviços essenciais e dicas sazonais reais e próximos ao imóvel. Responda em português do Brasil.`;
+Gere um guia com restaurantes reais (4 a 5 opções), atrações turísticas (3 a 4 opções), serviços essenciais (farmácias, supermercados, hospitais) e uma dica sazonal relevante para a época do ano atual — tudo próximo ao endereço acima. Responda em português do Brasil.`;
 }

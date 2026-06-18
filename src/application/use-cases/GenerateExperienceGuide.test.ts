@@ -59,7 +59,10 @@ describe("GenerateExperienceGuide", () => {
 
   beforeEach(() => {
     generator = { generate: vi.fn() };
-    repository = { find: vi.fn(), save: vi.fn() };
+    repository = {
+      find: vi.fn(),
+      save: vi.fn(),
+    };
     useCase = new GenerateExperienceGuide(repository, generator);
   });
 

@@ -14,6 +14,7 @@ export class GenerateExperienceGuide {
 
     const content = await this.generator.generate(property);
     await this.repository.save(property.code, content);
+
     return content;
   }
 }
