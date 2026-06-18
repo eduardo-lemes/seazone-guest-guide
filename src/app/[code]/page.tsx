@@ -6,6 +6,7 @@ import { AccessInfo } from "@/components/organisms/AccessInfo";
 import { StayRules } from "@/components/organisms/StayRules";
 import { ContactSection } from "@/components/organisms/ContactSection";
 import { ExperienceGuideLoader } from "@/components/organisms/ExperienceGuideLoader";
+import { ChatPanel } from "@/components/organisms/ChatPanel";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -22,6 +23,7 @@ export default async function GuidePage({ params }: Props) {
       stayRules={<StayRules rules={property.rules} />}
       contact={<ContactSection property={property} />}
       experienceGuide={<ExperienceGuideLoader propertyCode={property.code} />}
+      chatPanel={<ChatPanel propertyCode={property.code} />}
     />
   );
 }
