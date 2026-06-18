@@ -42,7 +42,7 @@ export function WelcomeBanner({ propertyName, propertyCode, city }: Props) {
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="flex flex-col md:flex-row">
         {/* Boas-vindas */}
-        <div className="flex flex-1 flex-col justify-between p-6">
+        <div className="flex flex-col justify-between p-6 md:w-[56%]">
           <div>
             <p className="text-base font-semibold text-[#1a2a4a]">
               Bem-vindo ao{" "}
@@ -69,7 +69,7 @@ export function WelcomeBanner({ propertyName, propertyCode, city }: Props) {
         </div>
 
         {/* Dica da temporada */}
-        <div className="flex flex-col justify-between border-t border-slate-100 bg-amber-50/60 p-6 md:w-[42%] md:border-l md:border-t-0">
+        <div className="flex flex-1 flex-col justify-between border-t border-slate-100 bg-amber-50/60 p-6 md:border-l md:border-t-0">
           <div>
             {/* Header */}
             <div className="flex items-center justify-between">
