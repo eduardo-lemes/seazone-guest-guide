@@ -24,9 +24,22 @@ function makeDivIcon(emoji: string, bg: string): L.DivIcon {
 function MapResizer({ isActive }: { isActive: boolean }) {
   const map = useMap();
   useEffect(() => {
-    if (isActive) {
-      setTimeout(() => map.invalidateSize(), 50);
-    }
+    // Always invalidate on mount (first render is already visible)
+    const r1 = requestAnimationFrame(() => {
+      const r2 = requestAnimationFrame(() => map.invalidateSize());
+      return () => cancelAnimationFrame(r2);
+    });
+    return () => cancelAnimationFrame(r1);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!isActive) return;
+    const r1 = requestAnimationFrame(() => {
+      const r2 = requestAnimationFrame(() => map.invalidateSize());
+      return () => cancelAnimationFrame(r2);
+    });
+    return () => cancelAnimationFrame(r1);
   }, [isActive, map]);
   return null;
 }

@@ -35,6 +35,12 @@ export function TabbedContent({
   experienceGuide,
 }: Props) {
   const [active, setActive] = useState<Tab>("sobre");
+  const [mapaVisited, setMapaVisited] = useState(false);
+
+  function handleTabClick(id: Tab) {
+    if (id === "mapa") setMapaVisited(true);
+    setActive(id);
+  }
 
   return (
     <div>
@@ -43,7 +49,7 @@ export function TabbedContent({
           {TABS.map(({ id, label }) => (
             <button
               key={id}
-              onClick={() => setActive(id)}
+              onClick={() => handleTabClick(id)}
               className={`relative whitespace-nowrap px-6 py-4 text-sm font-medium transition-colors ${
                 active === id
                   ? "text-[#F07060]"
@@ -96,9 +102,11 @@ export function TabbedContent({
           {experienceGuide}
         </div>
 
-        <div hidden={active !== "mapa"}>
-          <MapView property={property} isActive={active === "mapa"} />
-        </div>
+        {mapaVisited && (
+          <div hidden={active !== "mapa"}>
+            <MapView property={property} isActive={active === "mapa"} />
+          </div>
+        )}
       </div>
     </div>
   );
