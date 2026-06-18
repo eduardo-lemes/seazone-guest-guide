@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Property } from "@/types/property";
@@ -21,9 +21,19 @@ function makeDivIcon(emoji: string, bg: string): L.DivIcon {
   });
 }
 
-type Props = { property: Property };
+function MapResizer({ isActive }: { isActive: boolean }) {
+  const map = useMap();
+  useEffect(() => {
+    if (isActive) {
+      setTimeout(() => map.invalidateSize(), 50);
+    }
+  }, [isActive, map]);
+  return null;
+}
 
-export default function MapView({ property }: Props) {
+type Props = { property: Property; isActive?: boolean };
+
+export default function MapView({ property, isActive = true }: Props) {
   const [center, setCenter] = useState<LatLng>(FLORIANOPOLIS);
   const [ready, setReady] = useState(false);
 
@@ -62,6 +72,7 @@ export default function MapView({ property }: Props) {
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
       <MapContainer center={center} zoom={15} style={{ height: "560px" }} scrollWheelZoom={false}>
+        <MapResizer isActive={isActive} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

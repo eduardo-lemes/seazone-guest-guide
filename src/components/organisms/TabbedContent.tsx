@@ -60,43 +60,45 @@ export function TabbedContent({
       </nav>
 
       <div className="py-8">
-        {active === "sobre" && (
-          <div className="space-y-10">
-            <section>
-              <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-slate-400">
-                Amenidades
+        <div hidden={active !== "sobre"} className="space-y-10">
+          <section>
+            <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-slate-400">
+              Amenidades
+            </p>
+            {amenities}
+          </section>
+
+          <div className="h-px bg-slate-200" />
+
+          <div className="grid gap-8 lg:grid-cols-3">
+            <section className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                Acesso
               </p>
-              {amenities}
+              {accessInfo}
             </section>
-
-            <div className="h-px bg-slate-200" />
-
-            <div className="grid gap-8 lg:grid-cols-3">
-              <section className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                  Acesso
-                </p>
-                {accessInfo}
-              </section>
-              <section className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                  Regras
-                </p>
-                {stayRules}
-              </section>
-              <section className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                  Contato
-                </p>
-                {contact}
-              </section>
-            </div>
+            <section className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                Regras
+              </p>
+              {stayRules}
+            </section>
+            <section className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                Contato
+              </p>
+              {contact}
+            </section>
           </div>
-        )}
+        </div>
 
-        {active === "experiencias" && experienceGuide}
+        <div hidden={active !== "experiencias"}>
+          {experienceGuide}
+        </div>
 
-        {active === "mapa" && <MapView property={property} />}
+        <div hidden={active !== "mapa"}>
+          <MapView property={property} isActive={active === "mapa"} />
+        </div>
       </div>
     </div>
   );

@@ -73,8 +73,8 @@ describe("TabbedContent", () => {
   it("switches to Experiências tab", () => {
     render(<TabbedContent {...defaultProps} />);
     fireEvent.click(screen.getByRole("button", { name: "Experiências" }));
-    expect(screen.getByText("experience guide")).toBeInTheDocument();
-    expect(screen.queryByText("amenities")).not.toBeInTheDocument();
+    expect(screen.getByText("experience guide")).toBeVisible();
+    expect(screen.getByText("amenities")).not.toBeVisible();
   });
 
   it("switches to Mapa tab", () => {
@@ -86,7 +86,7 @@ describe("TabbedContent", () => {
   it("hides other content when Mapa tab is active", () => {
     render(<TabbedContent {...defaultProps} />);
     fireEvent.click(screen.getByRole("button", { name: "Mapa" }));
-    expect(screen.queryByText("amenities")).not.toBeInTheDocument();
-    expect(screen.queryByText("experience guide")).not.toBeInTheDocument();
+    expect(screen.getByText("amenities")).not.toBeVisible();
+    expect(screen.getByText("experience guide")).not.toBeVisible();
   });
 });
