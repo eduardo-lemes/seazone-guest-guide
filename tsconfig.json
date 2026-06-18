@@ -19,9 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "react-leaflet": ["./node_modules/react-leaflet/lib/index.d.ts"],
-      "leaflet": ["./node_modules/@types/leaflet/index.d.ts"]
+      "@/*": ["./src/*"]
     },
     "types": ["vitest/globals", "@testing-library/jest-dom", "node"]
   },
