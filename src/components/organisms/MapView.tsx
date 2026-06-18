@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Home } from "lucide-react";
 import type { Property } from "@/types/property";
 
 type LatLng = [number, number];
@@ -30,12 +31,14 @@ type OverpassElement = {
 };
 
 const CATEGORY_CONFIG: Record<PoiCategory, { label: string; color: string; emoji: string }> = {
-  restaurant:   { label: "Restaurantes",   color: "#f97316", emoji: "🍽️" },
-  attraction:   { label: "Atrações",       color: "#3b82f6", emoji: "⭐" },
-  pharmacy:     { label: "Farmácias",      color: "#22c55e", emoji: "💊" },
-  supermarket:  { label: "Mercados",       color: "#a855f7", emoji: "🛒" },
-  hospital:     { label: "Hospitais",      color: "#ef4444", emoji: "🏥" },
+  restaurant:  { label: "Restaurantes", color: "#f97316", emoji: "🍽️" },
+  attraction:  { label: "Atrações",     color: "#3b82f6", emoji: "⭐" },
+  pharmacy:    { label: "Farmácias",    color: "#22c55e", emoji: "💊" },
+  supermarket: { label: "Mercados",     color: "#a855f7", emoji: "🛒" },
+  hospital:    { label: "Hospitais",    color: "#ef4444", emoji: "🏥" },
 };
+
+const ALL_CATEGORIES = Object.keys(CATEGORY_CONFIG) as PoiCategory[];
 
 function makeDivIcon(emoji: string, bg: string): L.DivIcon {
   return L.divIcon({
@@ -46,6 +49,18 @@ function makeDivIcon(emoji: string, bg: string): L.DivIcon {
     popupAnchor: [0, -20],
   });
 }
+
+function makeFocusIcon(): L.DivIcon {
+  return L.divIcon({
+    html: `<div style="position:relative;width:48px;height:48px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;width:48px;height:48px;border-radius:50%;background:rgba(240,112,96,0.22);"></div><div style="position:relative;background:#F07060;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 14px rgba(240,112,96,0.55);border:3px solid white;">📍</div></div>`,
+    className: "",
+    iconSize: [48, 48],
+    iconAnchor: [24, 24],
+    popupAnchor: [0, -28],
+  });
+}
+
+// ---------- Map controllers ----------
 
 function MapResizer({ isActive }: { isActive: boolean }) {
   const map = useMap();
@@ -68,6 +83,77 @@ function MapResizer({ isActive }: { isActive: boolean }) {
   }, [isActive, map]);
   return null;
 }
+
+function FocusMarker({ position, name }: { position: LatLng; name: string }) {
+  const markerRef = useRef<L.Marker>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      markerRef.current?.openPopup();
+    }, 900); // wait for flyTo animation to settle
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [position[0], position[1]]);
+
+  return (
+    <Marker position={position} icon={makeFocusIcon()} ref={markerRef}>
+      <Popup>
+        <strong style={{ color: "#1a2a4a", fontSize: "13px" }}>{name}</strong>
+      </Popup>
+    </Marker>
+  );
+}
+
+function MapController({
+  focusName,
+  onFocusHandled,
+  onFocusResolved,
+  returnHome,
+  homeCenter,
+  onReturnHandled,
+}: {
+  focusName: string | null;
+  onFocusHandled: () => void;
+  onFocusResolved: (lat: number, lon: number, name: string) => void;
+  returnHome: boolean;
+  homeCenter: LatLng;
+  onReturnHandled: () => void;
+}) {
+  const map = useMap();
+
+  // Focus on a named POI via Nominatim geocoding
+  useEffect(() => {
+    if (!focusName) return;
+    fetch(
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusName)}&format=json&limit=1`,
+      { headers: { "User-Agent": "SeazoneGuestGuide/1.0" } }
+    )
+      .then((r) => r.json())
+      .then((data: NominatimResult[]) => {
+        if (data[0]) {
+          const lat = parseFloat(data[0].lat);
+          const lon = parseFloat(data[0].lon);
+          map.flyTo([lat, lon], 17, { animate: true, duration: 1.2 });
+          onFocusResolved(lat, lon, focusName);
+        }
+      })
+      .catch(() => {})
+      .finally(() => onFocusHandled());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusName]);
+
+  // Return to property center
+  useEffect(() => {
+    if (!returnHome) return;
+    map.flyTo(homeCenter, 15, { animate: true, duration: 1.0 });
+    onReturnHandled();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [returnHome]);
+
+  return null;
+}
+
+// ---------- Data fetching ----------
 
 async function fetchPois(lat: number, lon: number): Promise<Poi[]> {
   const query = `
@@ -112,12 +198,29 @@ async function fetchPois(lat: number, lon: number): Promise<Poi[]> {
   return Object.values(byCategory).flat() as Poi[];
 }
 
-type Props = { property: Property; isActive?: boolean };
+// ---------- Main component ----------
 
-export default function MapView({ property, isActive = true }: Props) {
+type Props = {
+  property: Property;
+  isActive?: boolean;
+  focusName?: string | null;
+  onFocusHandled?: () => void;
+};
+
+export default function MapView({
+  property,
+  isActive = true,
+  focusName = null,
+  onFocusHandled = () => {},
+}: Props) {
   const [center, setCenter] = useState<LatLng>(FLORIANOPOLIS);
   const [pois, setPois] = useState<Poi[]>([]);
   const [ready, setReady] = useState(false);
+  const [returnHome, setReturnHome] = useState(false);
+  const [focusPoint, setFocusPoint] = useState<{ lat: number; lon: number; name: string } | null>(null);
+  const [activeCategories, setActiveCategories] = useState<Set<PoiCategory>>(
+    new Set(ALL_CATEGORIES)
+  );
 
   useEffect(() => {
     const IconDefault = L.Icon.Default as unknown as {
@@ -149,17 +252,39 @@ export default function MapView({ property, isActive = true }: Props) {
       .finally(() => setReady(true));
   }, [property.address]);
 
+  function toggleCategory(cat: PoiCategory) {
+    setActiveCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(cat)) {
+        next.delete(cat);
+      } else {
+        next.add(cat);
+      }
+      return next;
+    });
+  }
+
   if (!ready) {
     return <div className="h-[560px] animate-pulse rounded-2xl bg-slate-100" />;
   }
 
   const propertyIcon = makeDivIcon("🏠", "#F07060");
+  const visiblePois = pois.filter((p) => activeCategories.has(p.category));
 
   return (
-    <div className="space-y-4">
-      <div className="w-full overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-        <MapContainer center={center} zoom={15} style={{ height: "520px" }} scrollWheelZoom={false}>
+    <div className="space-y-3 isolate">
+      {/* Map container */}
+      <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+        <MapContainer center={center} zoom={15} style={{ height: "520px" }} scrollWheelZoom={true}>
           <MapResizer isActive={isActive} />
+          <MapController
+            focusName={focusName}
+            onFocusHandled={onFocusHandled}
+            onFocusResolved={(lat, lon, name) => setFocusPoint({ lat, lon, name })}
+            returnHome={returnHome}
+            homeCenter={center}
+            onReturnHandled={() => setReturnHome(false)}
+          />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -173,7 +298,13 @@ export default function MapView({ property, isActive = true }: Props) {
               </span>
             </Popup>
           </Marker>
-          {pois.map((poi) => {
+          {focusPoint && (
+            <FocusMarker
+              position={[focusPoint.lat, focusPoint.lon]}
+              name={focusPoint.name}
+            />
+          )}
+          {visiblePois.map((poi) => {
             const cfg = CATEGORY_CONFIG[poi.category];
             return (
               <Marker
@@ -191,26 +322,49 @@ export default function MapView({ property, isActive = true }: Props) {
           })}
         </MapContainer>
 
-        <div className="flex items-center gap-2 bg-white px-4 py-3 text-xs text-slate-500">
-          <span className="text-[#F07060]">📍</span>
-          {property.address.street}, {property.address.number} —{" "}
-          {property.address.neighborhood}, {property.address.city} — {property.address.state}
+        {/* Return to property overlay button */}
+        <button
+          onClick={() => { setReturnHome(true); setFocusPoint(null); }}
+          className="absolute right-3 top-3 z-[1001] flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-md transition-all hover:bg-slate-50 hover:shadow-lg active:scale-95"
+        >
+          <Home size={13} className="text-[#F07060]" />
+          Voltar ao imóvel
+        </button>
+
+        {/* Address bar */}
+        <div className="border-t border-slate-100 bg-white px-4 py-3">
+          <p className="flex items-center gap-2 text-sm font-medium text-slate-800">
+            <span className="text-[#F07060]">📍</span>
+            {property.address.street}, {property.address.number}
+          </p>
+          <p className="mt-0.5 pl-6 text-xs text-slate-500">
+            {property.address.neighborhood}, {property.address.city} — {property.address.state}
+          </p>
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {[
-          { emoji: "🏠", label: "Imóvel", color: "#F07060" },
-          ...Object.values(CATEGORY_CONFIG).map(({ emoji, label, color }) => ({ emoji, label, color })),
-        ].map(({ emoji, label, color }) => (
-          <span
-            key={label}
-            className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600 shadow-sm"
-          >
-            <span>{emoji}</span>
-            <span style={{ color }}>{label}</span>
-          </span>
-        ))}
+      {/* Category filter pills */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs font-medium text-slate-400">Filtrar:</span>
+        {ALL_CATEGORIES.map((cat) => {
+          const { emoji, label, color } = CATEGORY_CONFIG[cat];
+          const isActive = activeCategories.has(cat);
+          return (
+            <button
+              key={cat}
+              onClick={() => toggleCategory(cat)}
+              className="flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium shadow-sm transition-all hover:opacity-90 active:scale-95"
+              style={
+                isActive
+                  ? { backgroundColor: color, borderColor: color, color: "#fff" }
+                  : { backgroundColor: "#fff", borderColor: "#e2e8f0", color: "#94a3b8" }
+              }
+            >
+              <span>{emoji}</span>
+              {label}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

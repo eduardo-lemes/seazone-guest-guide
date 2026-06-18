@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Property {
-  code             String  @id
+  code             String           @id
   name             String
   propertyType     String
   bedroomQuantity  Int
@@ -22,14 +22,23 @@ model Property {
   images           String[]
   hostName         String
   hostPhone        String
-
-  experienceGuide ExperienceGuide?
+  experienceGuide  ExperienceGuide?
+  insight          PropertyInsight?
 }
 
 model ExperienceGuide {
   id           String   @id @default(cuid())
   propertyCode String   @unique
-  property     Property @relation(fields: [propertyCode], references: [code])
   content      Json
   generatedAt  DateTime @default(now())
+  property     Property @relation(fields: [propertyCode], references: [code])
+}
+
+/// Armazena o insight de IA (dica da temporada) gerado uma única vez.
+/// Este registro NUNCA é sobrescrito após criado.
+model PropertyInsight {
+  propertyCode String   @id
+  seasonalTip  String
+  lockedAt     DateTime @default(now())
+  property     Property @relation(fields: [propertyCode], references: [code])
 }

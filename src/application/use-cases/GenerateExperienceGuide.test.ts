@@ -59,7 +59,12 @@ describe("GenerateExperienceGuide", () => {
 
   beforeEach(() => {
     generator = { generate: vi.fn() };
-    repository = { find: vi.fn(), save: vi.fn() };
+    repository = {
+      find: vi.fn(),
+      save: vi.fn(),
+      findSeasonalTip: vi.fn().mockResolvedValue(null),
+      saveSeasonalTip: vi.fn().mockResolvedValue(undefined),
+    };
     useCase = new GenerateExperienceGuide(repository, generator);
   });
 
