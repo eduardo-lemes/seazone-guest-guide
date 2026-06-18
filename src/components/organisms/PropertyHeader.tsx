@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { MapPin, BedDouble, Bath, Users } from "lucide-react";
+import { MapPin, BedDouble, Bath, Users, Wifi, Clock } from "lucide-react";
 import type { Property } from "@/types/property";
 
 type Props = { property: Property };
 
 export function PropertyHeader({ property }: Props) {
-  const { address } = property;
+  const { address, rules, operational } = property;
 
   return (
     <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
@@ -21,29 +21,66 @@ export function PropertyHeader({ property }: Props) {
           />
         </div>
 
-        <div className="flex flex-1 flex-col justify-between p-8">
+        <div className="flex flex-1 flex-col gap-4 p-7">
+          {/* Identidade */}
           <div>
             <span className="inline-block rounded-full border border-[#F07060]/25 bg-[#F07060]/8 px-3 py-0.5 text-xs font-semibold text-[#F07060]">
               {property.propertyType}
             </span>
-            <h1 className="mt-3 text-2xl font-bold leading-tight text-[#1a2a4a] md:text-3xl">
+            <h1 className="mt-3 text-2xl font-bold leading-tight text-[#1a2a4a] md:text-[1.65rem]">
               {property.name}
             </h1>
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-slate-500">
+            <p className="mt-1.5 flex items-center gap-1.5 text-sm text-slate-500">
               <MapPin size={13} className="shrink-0 text-[#F07060]" />
               {address.neighborhood}, {address.city} — {address.state}
             </p>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="h-px bg-slate-100" />
+
+          {/* Check-in/out + Wi-Fi */}
+          <div className="space-y-2.5">
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="rounded-xl bg-slate-50 px-4 py-3">
+                <p className="flex items-center gap-1.5 text-xs text-slate-400">
+                  <Clock size={11} />
+                  Check-in
+                </p>
+                <p className="mt-1 text-sm font-semibold text-[#1a2a4a]">
+                  a partir de {rules.checkInTime}
+                </p>
+              </div>
+              <div className="rounded-xl bg-slate-50 px-4 py-3">
+                <p className="flex items-center gap-1.5 text-xs text-slate-400">
+                  <Clock size={11} />
+                  Check-out
+                </p>
+                <p className="mt-1 text-sm font-semibold text-[#1a2a4a]">
+                  até {rules.checkOutTime}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 rounded-xl bg-slate-50 px-4 py-3">
+              <Wifi size={14} className="shrink-0 text-[#F07060]" />
+              <span className="text-sm text-slate-600">{operational.wifiNetwork}</span>
+              <span className="text-slate-300">·</span>
+              <code className="font-mono text-sm text-slate-700">{operational.wifiPassword}</code>
+            </div>
+          </div>
+
+          <div className="h-px bg-slate-100" />
+
+          {/* Capacidade */}
+          <div className="flex flex-wrap gap-2.5">
             {[
-              { icon: <BedDouble size={15} />, label: `${property.bedroomQuantity} quarto${property.bedroomQuantity > 1 ? "s" : ""}` },
-              { icon: <Bath size={15} />, label: `${property.bathroomQuantity} banheiro${property.bathroomQuantity > 1 ? "s" : ""}` },
-              { icon: <Users size={15} />, label: `Até ${property.guestCapacity} hóspedes` },
+              { icon: <BedDouble size={14} />, label: `${property.bedroomQuantity} quarto${property.bedroomQuantity > 1 ? "s" : ""}` },
+              { icon: <Bath size={14} />, label: `${property.bathroomQuantity} banheiro${property.bathroomQuantity > 1 ? "s" : ""}` },
+              { icon: <Users size={14} />, label: `Até ${property.guestCapacity} hóspedes` },
             ].map(({ icon, label }) => (
               <div
                 key={label}
-                className="flex items-center gap-2 rounded-xl bg-slate-50 px-4 py-2.5 text-sm text-slate-700"
+                className="flex items-center gap-1.5 rounded-xl bg-slate-50 px-3.5 py-2 text-sm text-slate-700"
               >
                 <span className="text-[#F07060]">{icon}</span>
                 {label}
