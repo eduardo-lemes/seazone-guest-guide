@@ -67,4 +67,9 @@ describe("buildExperienceGuidePrompt", () => {
     const prompt = buildExperienceGuidePrompt(mockProperty);
     expect(prompt).toContain("4");
   });
+
+  it("uses fallback text when no amenities are active", () => {
+    const prompt = buildExperienceGuidePrompt({ ...mockProperty, amenities: {} });
+    expect(prompt).toContain("não informadas");
+  });
 });
