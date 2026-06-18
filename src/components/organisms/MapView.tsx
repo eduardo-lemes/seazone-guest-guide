@@ -83,7 +83,7 @@ export default function MapView({ property, isActive = true }: Props) {
   const propertyIcon = makeDivIcon("🏠", "#F07060");
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm w-full">
       <MapContainer center={center} zoom={15} style={{ height: "560px" }} scrollWheelZoom={false}>
         <MapResizer isActive={isActive} />
         <TileLayer

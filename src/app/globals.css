@@ -6,6 +6,7 @@
 
 html {
   background-color: #f8fafc;
+  scrollbar-gutter: stable;
 }
 
 @theme inline {

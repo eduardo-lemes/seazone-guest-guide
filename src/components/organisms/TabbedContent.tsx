@@ -65,7 +65,7 @@ export function TabbedContent({
         </div>
       </nav>
 
-      <div className="py-8">
+      <div className="py-8 min-h-[640px]">
         <div hidden={active !== "sobre"} className="space-y-10">
           <section>
             <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-slate-400">
