@@ -12,6 +12,11 @@ describe("TopNav", () => {
     expect(screen.getByText("Guia do Hóspede")).toBeInTheDocument();
   });
 
+  it("renders the share button", () => {
+    render(<TopNav />);
+    expect(screen.getByRole("button")).toBeInTheDocument();
+  });
+
   it("renders as a header element", () => {
     const { container } = render(<TopNav />);
     expect(container.querySelector("header")).toBeInTheDocument();

@@ -1,62 +1,53 @@
 import { TopNav } from "@/components/organisms/TopNav";
-
-type SectionProps = {
-  title: string;
-  children: React.ReactNode;
-};
-
-function Section({ title, children }: SectionProps) {
-  return (
-    <section>
-      <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
-        {title}
-      </p>
-      {children}
-    </section>
-  );
-}
+import { PropertyHeader } from "@/components/organisms/PropertyHeader";
+import { TabbedContent } from "@/components/organisms/TabbedContent";
+import { ChatSidebar } from "@/components/organisms/ChatSidebar";
+import { ChatPanel } from "@/components/organisms/ChatPanel";
+import type { Property } from "@/types/property";
 
 type GuideLayoutProps = {
-  header: React.ReactNode;
+  property: Property;
   accessInfo: React.ReactNode;
   stayRules: React.ReactNode;
   contact: React.ReactNode;
-  experienceGuide?: React.ReactNode;
-  chatPanel?: React.ReactNode;
+  amenities: React.ReactNode;
+  experienceGuide: React.ReactNode;
 };
 
 export function GuideLayout({
-  header,
+  property,
   accessInfo,
   stayRules,
   contact,
+  amenities,
   experienceGuide,
-  chatPanel,
 }: GuideLayoutProps) {
   return (
     <>
       <TopNav />
-      <div className="mx-auto max-w-2xl px-4 pb-28 pt-6">
-        <div className="space-y-8">
-          {header}
+      <main className="mx-auto max-w-5xl px-4 pb-20 pt-6">
+        <PropertyHeader property={property} />
 
-          <div className="h-px bg-slate-200" />
+        <div className="mt-6 flex items-start gap-6">
+          <div className="min-w-0 flex-1">
+            <TabbedContent
+              property={property}
+              accessInfo={accessInfo}
+              stayRules={stayRules}
+              contact={contact}
+              amenities={amenities}
+              experienceGuide={experienceGuide}
+            />
+          </div>
 
-          <Section title="Informações de Acesso">{accessInfo}</Section>
-          <Section title="Regras da Estadia">{stayRules}</Section>
-
-          {experienceGuide && (
-            <>
-              <div className="h-px bg-slate-200" />
-              <Section title="Guia de Experiências">{experienceGuide}</Section>
-            </>
-          )}
-
-          <div className="h-px bg-slate-200" />
-          <Section title="Contato">{contact}</Section>
+          <div className="hidden w-[300px] shrink-0 xl:block">
+            <ChatSidebar propertyCode={property.code} />
+          </div>
         </div>
+      </main>
 
-        {chatPanel}
+      <div className="xl:hidden">
+        <ChatPanel propertyCode={property.code} />
       </div>
     </>
   );
