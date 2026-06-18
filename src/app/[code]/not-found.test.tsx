@@ -15,6 +15,11 @@ describe("NotFound", () => {
 
   it("has a link back to home", () => {
     render(<NotFound />);
-    expect(screen.getByRole("link")).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: /voltar ao início/i })).toHaveAttribute("href", "/");
+  });
+
+  it("shows available property links", () => {
+    render(<NotFound />);
+    expect(screen.getByRole("link", { name: /FLN001/i })).toHaveAttribute("href", "/FLN001");
   });
 });
