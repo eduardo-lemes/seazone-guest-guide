@@ -3,6 +3,7 @@ import { PropertyHeader } from "@/components/organisms/PropertyHeader";
 import { TabbedContent } from "@/components/organisms/TabbedContent";
 import { WelcomeBanner } from "@/components/molecules/WelcomeBanner";
 import { ChatPanel } from "@/components/organisms/ChatPanel";
+import { Footer } from "@/components/organisms/Footer";
 import type { Property } from "@/types/property";
 
 type GuideLayoutProps = {
@@ -41,6 +42,7 @@ export function GuideLayout({
           />
         </div>
       </main>
+      <Footer />
       <ChatPanel propertyCode={property.code} />
     </>
   );
