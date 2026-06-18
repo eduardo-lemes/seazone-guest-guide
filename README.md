@@ -4,9 +4,30 @@ Guia digital para hóspedes de imóveis Seazone. Cada propriedade tem uma URL ú
 
 ---
 
-## Arquitetura
+## Princípios de Engenharia
 
-Clean Architecture com Atomic Design no frontend. A lógica de negócio (`application/`) é independente de infraestrutura - o banco e o provedor de IA podem ser trocados sem tocar nos casos de uso.
+### Clean Architecture
+A lógica de negócio (`application/`) é totalmente independente de infraestrutura. O caso de uso `GenerateExperienceGuide` não sabe se o banco é Postgres ou SQLite, nem se a IA é Claude ou GPT — ele depende apenas das interfaces `IExperienceGuideRepository` e `IExperienceGuideGenerator`. Trocar qualquer um dos dois não exige alterar o caso de uso.
+
+### SOLID
+- **S** — cada classe tem uma única responsabilidade: `GenerateExperienceGuide` orquestra, `PrismaExperienceGuideRepository` persiste, `VercelAIExperienceGuideGenerator` gera.
+- **O** — novos provedores de IA ou banco se adicionam implementando as interfaces existentes, sem modificar o código que as consome.
+- **L** — as implementações de repositório e generator são substituíveis sem quebrar os casos de uso (verificado pelos testes com mocks).
+- **I** — `IExperienceGuideRepository` e `IExperienceGuideGenerator` são interfaces mínimas, cada uma com um único método.
+- **D** — os casos de uso dependem de abstrações (interfaces), não de implementações concretas.
+
+### Clean Code
+Nomes autoexplicativos, funções curtas com responsabilidade única, sem comentários que apenas repetem o código. TypeScript strict ativado — sem `any` implícito.
+
+### Atomic Design
+Componentes organizados em átomos (`SeazoneIcon`, `Badge`), moléculas (`WelcomeBanner`, `AmenityList`), organismos (`ChatPanel`, `MapView`, `ExperienceGuide`) e templates (`GuideLayout`).
+
+### TDD
+Testes escritos antes ou junto com a implementação. 67 testes cobrindo casos de uso, componentes, queries e prompts — sem mocks desnecessários onde o comportamento real pode ser testado.
+
+---
+
+## Arquitetura
 
 ```
 src/
