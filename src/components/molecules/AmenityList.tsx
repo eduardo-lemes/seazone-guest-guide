@@ -4,7 +4,7 @@ import {
 } from "lucide-react";
 import type { Amenities } from "@/types/property";
 
-const AMENITY_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
+export const AMENITY_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
   wifi:           { label: "Wi-Fi",          icon: <Wifi size={16} /> },
   tv:             { label: "TV",             icon: <Tv size={16} /> },
   airConditioning:{ label: "Ar-condicionado",icon: <Wind size={16} /> },

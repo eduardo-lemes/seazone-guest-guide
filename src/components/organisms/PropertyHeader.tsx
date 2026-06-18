@@ -1,11 +1,16 @@
 import Image from "next/image";
-import { MapPin, BedDouble, Bath, Users, Wifi, Clock } from "lucide-react";
+import { MapPin, BedDouble, Bath, Users, Clock } from "lucide-react";
 import type { Property } from "@/types/property";
+import { AMENITY_CONFIG } from "@/components/molecules/AmenityList";
 
 type Props = { property: Property };
 
 export function PropertyHeader({ property }: Props) {
-  const { address, rules } = property;
+  const { address, rules, amenities } = property;
+  const topAmenities = Object.entries(amenities)
+    .filter(([, enabled]) => enabled)
+    .slice(0, 3)
+    .map(([key]) => ({ key, ...(AMENITY_CONFIG[key] ?? { label: key, icon: null }) }));
 
   return (
     <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
@@ -59,9 +64,13 @@ export function PropertyHeader({ property }: Props) {
               </div>
             </div>
 
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5">
-              <Wifi size={12} className="text-emerald-600" />
-              <span className="text-xs font-medium text-emerald-700">Wi-Fi disponível</span>
+            <div className="flex flex-wrap gap-2">
+              {topAmenities.map(({ key, label, icon }) => (
+                <div key={key} className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5">
+                  <span className="text-emerald-600 [&>svg]:h-3 [&>svg]:w-3">{icon}</span>
+                  <span className="text-xs font-medium text-emerald-700">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
 
