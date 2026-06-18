@@ -26,33 +26,6 @@ function PlaceCard({ name, distance, description, accentColor }: CardProps) {
   );
 }
 
-type SubSectionProps = {
-  icon: React.ReactNode;
-  title: string;
-  iconBg: string;
-  accentColor: string;
-  children: React.ReactNode;
-};
-
-function SubSection({ icon, title, iconBg, accentColor, children }: SubSectionProps) {
-  return (
-    <div>
-      <div className="mb-4 flex items-center gap-3">
-        <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${iconBg}`}>
-          {icon}
-        </div>
-        <h3 className="text-base font-semibold text-[#1a2a4a]">{title}</h3>
-      </div>
-      <div className="space-y-3">
-        {Array.isArray(children)
-          ? (children as React.ReactElement<CardProps>[]).map((child) =>
-              child ? { ...child, props: { ...child.props, accentColor } } : child
-            )
-          : children}
-      </div>
-    </div>
-  );
-}
 
 export function ExperienceGuide({ content }: ExperienceGuideProps) {
   return (
