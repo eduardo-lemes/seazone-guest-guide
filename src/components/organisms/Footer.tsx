@@ -1,10 +1,33 @@
 import Image from "next/image";
-import { Instagram, Linkedin, ExternalLink } from "lucide-react";
 
 const LINKS = [
-  { label: "seazone.com.br", href: "https://seazone.com.br/", icon: <ExternalLink size={13} /> },
-  { label: "Instagram", href: "https://www.instagram.com/destinoseazone/", icon: <Instagram size={13} /> },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/destinoseazone/", icon: <Linkedin size={13} /> },
+  {
+    label: "seazone.com.br",
+    href: "https://seazone.com.br/",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" y1="12" x2="3" y2="12" />
+      </svg>
+    ),
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/destinoseazone/",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/destinoseazone/",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" />
+      </svg>
+    ),
+  },
 ];
 
 export function Footer() {
