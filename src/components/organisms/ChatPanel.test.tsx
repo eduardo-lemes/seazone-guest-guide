@@ -87,8 +87,8 @@ describe("ChatPanel", () => {
     expect(screen.getByText("A senha está na etiqueta.")).toBeInTheDocument();
   });
 
-  it("shows typing indicator while streaming", () => {
-    vi.mocked(useChat).mockReturnValue({ ...baseMock, status: "streaming" });
+  it("shows typing indicator while loading", () => {
+    vi.mocked(useChat).mockReturnValue({ ...baseMock, status: "submitted" });
     render(<ChatPanel propertyCode="FLN001" />);
     fireEvent.click(screen.getByRole("button", { name: /abrir chat/i }));
     const dots = document.querySelectorAll(".animate-bounce");

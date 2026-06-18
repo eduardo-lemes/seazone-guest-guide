@@ -1,6 +1,6 @@
 "use client";
 
-import { Utensils, Landmark, ShoppingBag, MapPin, Sparkles } from "lucide-react";
+import { Utensils, Landmark, ShoppingBag, MapPin, Sparkles, Sun } from "lucide-react";
 import type { ExperienceGuideContent } from "@/types/property";
 
 type ExperienceGuideProps = {
@@ -102,6 +102,19 @@ export function ExperienceGuide({ content }: ExperienceGuideProps) {
               />
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Dica Sazonal */}
+      {content.seasonalTip && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Sun size={15} className="text-amber-500" />
+            <p className="text-xs font-semibold uppercase tracking-widest text-amber-600">
+              Dica da Temporada
+            </p>
+          </div>
+          <p className="text-sm leading-relaxed text-amber-900">{content.seasonalTip}</p>
         </div>
       )}
 
